@@ -1,0 +1,5 @@
+<form method="post">{% csrf_token %}
+    Delete {{ object.title }}?<br>
+    <input type="submit" value="Yes">
+    <a href="{% url 'organization_list_url' %}">Cancel</a>
+</form>

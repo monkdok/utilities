@@ -1,0 +1,17 @@
+    <h3>{{ organization.title }}</h3>
+    <ul>
+        <li>tariff: {{ organization.tariff }}</li>
+        <li>units: {{ organization.measurement_units }}</li>
+        {% if last_payment.previous_counter_value %}
+            <li>previous counter value: {{ last_payment.previous_counter_value }}
+        {% endif %}
+    </ul>
+
+    <a href="{% url 'organization_update_url' organization.slug %}"><button>Edit</button></a>
+    <a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
+    <a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>
+
+
+
+
+    <a href="{% url 'payment_archive_url' organization.slug %}"><button>Archive</button></a>

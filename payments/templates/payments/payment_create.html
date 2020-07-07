@@ -1,0 +1,11 @@
+<h3>{{ organization.title }}</h3>
+New payment:
+<br>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="number" name="previous_counter_value" placeholder="previous" value="{{ last_payment.previous_counter_value }}">
+    <input type="number" name="current_counter_value" placeholder="current">
+
+    <input type="submit" value="OK">
+</form>

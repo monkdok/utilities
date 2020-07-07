@@ -1,0 +1,15 @@
+*.pyc
+*~
+__pycache__
+myvenv
+.DS_Store
+settings.py
+Pipfile
+db.json
+payments/migrations
+django_settings_backup.py
+db.sqlite3
+github_ssh.txt
+github_ssh.txt.pub
+venv/
+

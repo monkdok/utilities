@@ -1,0 +1,7 @@
+<form method="post">
+    {% csrf_token %}
+    <h3>Edit {{ object.title }}</h3>
+    {{ form.as_p }}<br>
+    <a href="{% url 'organization_list_url' %}">Cancel</a>
+    <input type="submit" value="OK">
+</form>
