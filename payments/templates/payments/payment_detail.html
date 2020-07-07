@@ -1,0 +1,8 @@
+<h3>{{ payment.organization }}</h3>
+<ul>
+    <li>Date: {{ payment.date }}</li>
+    <li>Tariff: {{ payment.organization.tariff }} hrn.</li>
+    <li>counter values: {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)</li>
+    <li>Difference: {{ payment.difference }} {{ payment.organization.measurement_units }}.</li>
+    <li>Payment: {{ payment.amount }} hrn.</li>
+</ul>

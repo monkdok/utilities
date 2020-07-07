@@ -24,6 +24,7 @@ urlpatterns = [
     path('delete/<str:slug>', OrganizationDelete.as_view(), name="organization_delete_url"),
     path('new-payment/<str:slug>', PaymentCreate.as_view(), name="payment_create_url"),
     path('archive/<str:slug>', PaymentArchive.as_view(), name="payment_archive_url"),
+    path('payment/<int:pk>', PaymentDetail.as_view(), name="payment_detail_url"),
 
 
 ]

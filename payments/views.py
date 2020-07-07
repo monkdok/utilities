@@ -93,8 +93,6 @@ class PaymentCreate(View):
             if form.current_counter_value and form.previous_counter_value:
                 form.difference = form.current_counter_value - form.previous_counter_value
                 form.amount = form.difference * organization.tariff
-            form.previous_counter_value = form.current_counter_value
-            form.current_counter_value = 0
             print('organization:', organization)
             print('difference:', form.difference)
             print('amount:', form.amount)
@@ -105,5 +103,34 @@ class PaymentCreate(View):
             print('=================not valid')
 
 
+class PaymentList(View):
+    def get(self, request):
+        organization = Organization.objects.all()
+        form = OrganizationCreateForm()
+        context = {
+            'organization': organization,
+            'form': form,
+        }
+        return render(request, 'payments/organization_list.html', context)
+
+
+class PaymentDetail(View):
+    def get(self, request, pk):
+        payment = Payment.objects.get(id=pk)
+        organization = payment.organization
+        context = {
+            'payment': payment,
+
+        }
+        return render(request, 'payments/payment_detail.html', context)
+
+
 class PaymentArchive(View):
-    pass
+    def get(self, request, slug):
+        organization = Organization.objects.get(slug=slug)
+        payments = Payment.objects.filter(organization=organization)
+        context = {
+            'payments': payments,
+            'organization': organization,
+        }
+        return render(request, 'payments/payment_archive.html', context)
