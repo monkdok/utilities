@@ -10,15 +10,13 @@ from django.views.generic import View, DetailView, DeleteView, UpdateView
 from .forms import *
 
 
-class OrganizationList(View):
+class OrganizationCreate(View):
     def get(self, request):
-        organization = Organization.objects.all()
         form = OrganizationCreateForm()
         context = {
-            'organization': organization,
             'form': form,
         }
-        return render(request, 'payments/organization_list.html', context)
+        return render(request, 'payments/organization_create.html', context)
 
     def post(self, request):
         form = OrganizationCreateForm(request.POST)
@@ -27,9 +25,18 @@ class OrganizationList(View):
             # form.author = self.request.user
             print('inside is form is valid')
             form.save()
-            return HttpResponseRedirect(self.request.path_info)
+            return redirect('organization_list_url')
         else:
             print('not valid')
+
+
+class OrganizationList(View):
+    def get(self, request):
+        organization = Organization.objects.all()
+        context = {
+            'organization': organization,
+        }
+        return render(request, 'payments/organization_list.html', context)
 
 
 class OrganizationDetail(View):
@@ -134,3 +141,4 @@ class PaymentArchive(View):
             'organization': organization,
         }
         return render(request, 'payments/payment_archive.html', context)
+

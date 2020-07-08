@@ -1,19 +1,9 @@
-{% for organization in organization %}
-    <a href="{% url 'organization_detail_url' organization.slug %}"><button>{{organization.title}}</button></a>
+{% extends 'payments/base.html' %}
+
+{% block content %}
+    {% for organization in organization %}
+    <a href="{% url 'organization_detail_url' organization.slug %}" class="btn btn-primary mb-5 mt-3">{{organization.title}}</a>
 {% endfor %}
 <br>
-<form method="post">
-    {% csrf_token %}
-<!--    <label for="title">Enter organization name: </label>-->
-    <input id="title" type="text" name="title" placeholder="Organization name">
-    <input id="tariff" name="tariff"  type="number" step="0.01" placeholder="tariff">
-    <select name="measurement_units" id="measurement_units">
-        <option value="кВт/ч">кВт/ч</option>
-        <option value="м3">м3</option>
-    </select>
-<!--    {{ form.title }}-->
-<!--    {{ form.tariff }}-->
-<!--    {{ form.previous_counter_value }}-->
-<!--    {{ form.measurement_units }}-->
-    <input type="submit" value="OK">
-</form>
+<a href="{% url 'organization_create_url' %}" class="btn btn-secondary">Add Organization</a>
+{% endblock %}

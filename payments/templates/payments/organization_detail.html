@@ -1,17 +1,17 @@
-    <h3>{{ organization.title }}</h3>
-    <ul>
-        <li>tariff: {{ organization.tariff }} hrn.</li>
-        <li>units: {{ organization.measurement_units }}.</li>
-        {% if last_payment.current_counter_value %}
-            <li>previous counter value: {{ last_payment.current_counter_value }} ({{ organization.measurement_units }}.)
+{% extends 'payments/base.html' %}
+
+{% block content %}
+<h3>{{ organization.title }}</h3>
+<ul>
+    <li>tariff: {{ organization.tariff }} hrn.</li>
+    <li>units: {{ organization.measurement_units }}.</li>
+    {% if last_payment.current_counter_value %}
+    <li>previous counter value: {{ last_payment.current_counter_value }} ({{ organization.measurement_units }}.)
         {% endif %}
-    </ul>
+</ul>
 
-    <a href="{% url 'organization_update_url' organization.slug %}"><button>Edit</button></a>
-    <a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
-    <a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>
-
-
-
-
-    <a href="{% url 'payment_archive_url' organization.slug %}"><button>Archive</button></a>
+<a href="{% url 'organization_update_url' organization.slug %}"><button>Edit</button></a>
+<a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
+<a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>
+<a href="{% url 'payment_archive_url' organization.slug %}"><button>Archive</button></a>
+{% endblock %}
