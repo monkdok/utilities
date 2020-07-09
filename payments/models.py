@@ -7,12 +7,22 @@ from slugify import slugify
 from datetime import date
 
 
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30, blank=True, unique=False)
+    last_name = models.CharField(max_length=30, blank=True, unique=False)
+    surname = models.CharField(max_length=30, blank=True, unique=False)
+    address = models.CharField(max_length=100, blank=True, unique=False)
+
+    def __str__(self):
+        return '{}-{}-{}'.format(self.last_name, self.first_name, self.surname)
+
 
 class Organization(models.Model):
     MEASUREMENT_UNITS_CHOICES = (('кВт/ч', 'кВт/ч'), ('м3', 'м3'))
 
     id = models.AutoField(primary_key=True)
-    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='dok_jf')
     first_name = models.CharField(max_length=100, blank=True, unique=False)
     second_name = models.CharField(max_length=100, blank=True, unique=False)
     date = models.DateField(auto_now_add=True)
@@ -37,7 +47,7 @@ class Organization(models.Model):
 
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='dok_jf')
     date = models.DateField(auto_now_add=True)
     # slug = models.SlugField(max_length=100, unique=True, blank=True)
     difference = models.PositiveIntegerField(default=0, blank=True, null=True)

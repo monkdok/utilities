@@ -1,8 +1,10 @@
 {% extends 'payments/base.html' %}
 
 {% block content %}
+{% if user %}
 <h3>{{ organization.title }}</h3>
 <ul>
+    <li>Name: {{ request.user.last_name }} {{ request.user.first_name }}. {{ request.user.father_name }}</li>
     <li>tariff: {{ organization.tariff }} hrn.</li>
     <li>units: {{ organization.measurement_units }}.</li>
     {% if last_payment.current_counter_value %}
@@ -14,4 +16,9 @@
 <a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
 <a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>
 <a href="{% url 'payment_archive_url' organization.slug %}"><button>Archive</button></a>
+{% else %}
+    <div class="data-button">
+        <a href="{% url 'custom_profile_url' %}" class="btn btn-secondary">Enter personal data</a>
+    </div>
+{% endif %}
 {% endblock %}

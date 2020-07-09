@@ -2,7 +2,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.template.loader import render_to_string
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import date
 from django.contrib.auth.views import LoginView, LogoutView
@@ -21,9 +21,8 @@ class OrganizationCreate(View):
     def post(self, request):
         form = OrganizationCreateForm(request.POST)
         if form.is_valid():
-            # form = form.save(commit=False)
-            # form.author = self.request.user
-            print('inside is form is valid')
+            form = form.save(commit=False)
+            form.author = self.request.user
             form.save()
             return redirect('organization_list_url')
         else:
@@ -32,9 +31,14 @@ class OrganizationCreate(View):
 
 class OrganizationList(View):
     def get(self, request):
+        if CustomUser.objects.all():
+            user = CustomUser.objects.get(user=self.request.user)
+        else:
+            user = None
         organization = Organization.objects.all()
         context = {
             'organization': organization,
+            'user': user,
         }
         return render(request, 'payments/organization_list.html', context)
 
@@ -42,6 +46,10 @@ class OrganizationList(View):
 class OrganizationDetail(View):
     def get(self, request, slug):
         form = OrganizationCreateForm()
+        if CustomUser.objects.all():
+            user = CustomUser.objects.get(user=self.request.user)
+        else:
+            user = None
         organization = Organization.objects.get(slug=slug)
         payments = Payment.objects.filter(organization=organization)
         if len(payments) > 0:
@@ -49,6 +57,7 @@ class OrganizationDetail(View):
         else:
             last_payment = None
         context = {
+            'user': user,
             'organization': organization,
             'form': form,
             'payments': payments,
@@ -100,10 +109,7 @@ class PaymentCreate(View):
             if form.current_counter_value and form.previous_counter_value:
                 form.difference = form.current_counter_value - form.previous_counter_value
                 form.amount = form.difference * organization.tariff
-            print('organization:', organization)
-            print('difference:', form.difference)
-            print('amount:', form.amount)
-            # form.author = self.request.user
+            form.author = self.request.user
             form.save()
             return redirect('organization_list_url')
         else:
@@ -142,3 +148,23 @@ class PaymentArchive(View):
         }
         return render(request, 'payments/payment_archive.html', context)
 
+
+class CustomUserView(View):
+    def get(self, request):
+        form = CustomUserForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'payments/personal_data.html', context)
+
+    def post(self, request):
+        form = CustomUserForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = self.request.user
+            print('BEFORE SAVE')
+            form.save()
+            print('user==========', form)
+            return redirect('organization_list_url')
+        else:
+            print('NOT VALID')
