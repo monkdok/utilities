@@ -23,10 +23,11 @@ urlpatterns = [
     path('create-organization/', OrganizationCreate.as_view(), name="organization_create_url"),
     path('organization/<str:slug>', OrganizationDetail.as_view(), name="organization_detail_url"),
     path('update/<str:slug>', OrganizationUpdate.as_view(), name="organization_update_url"),
-    path('delete/<str:slug>', OrganizationDelete.as_view(), name="organization_delete_url"),
+    path('organization/delete/<str:slug>', OrganizationDelete.as_view(), name="organization_delete_url"),
     path('new-payment/<str:slug>', PaymentCreate.as_view(), name="payment_create_url"),
     path('archive/<str:slug>', PaymentArchive.as_view(), name="payment_archive_url"),
     path('payment/<int:pk>', PaymentDetail.as_view(), name="payment_detail_url"),
+    path('payment/delete/<int:pk>', PaymentDelete.as_view(), name="payment_delete_url"),
     path('user-profile/', CustomUserView.as_view(), name="custom_profile_url"),
 
 

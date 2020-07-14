@@ -3,15 +3,14 @@
 {% block content %}
 {% if user %}
 <h3>{{ organization.title }}</h3>
-<ul>
-    <li>Name: {{ request.user.last_name }} {{ request.user.first_name }}. {{ request.user.father_name }}</li>
-    <li>tariff: {{ organization.tariff }} hrn.</li>
-    <li>units: {{ organization.measurement_units }}.</li>
-    {% if last_payment.current_counter_value %}
-    <li>previous counter value: {{ last_payment.current_counter_value }} ({{ organization.measurement_units }}.)
+    <div class="info">
+        <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+        <p>tariff: {{ organization.tariff }} hrn.</p>
+        <p>units: {{ organization.measurement_units }}.</p>
+        {% if last_payment.current_counter_value %}
+        <p>previous counter value: {{ last_payment.current_counter_value }} ({{ organization.measurement_units }}.)</p>
         {% endif %}
-</ul>
-
+    </div>
 <a href="{% url 'organization_update_url' organization.slug %}"><button>Edit</button></a>
 <a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
 <a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>

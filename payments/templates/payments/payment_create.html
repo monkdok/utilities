@@ -6,6 +6,7 @@ New payment:
     {% csrf_token %}
     <input type="number" name="previous_counter_value" placeholder="previous" value="{{ last_payment.current_counter_value }}">
     <input type="number" name="current_counter_value" placeholder="current">
+    <input type="text" name="payment_period" value="{{ payment_period|date:'m, Y' }}">
 
     <input type="submit" value="OK">
 </form>

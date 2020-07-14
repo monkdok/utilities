@@ -1,17 +1,21 @@
 {% extends 'payments/base.html' %}
 
 {% block content %}
-<div class="organizations">
-    {% for organization in organization %}
-        <a href="{% url 'organization_detail_url' organization.slug %}" class="btn btn-primary mb-5 mt-3">{{organization.title}}</a>
-    {% endfor %}
+<div class="row">
+    <div class="col-12 organizations">
+        <div class="row">
+            {% for organization in organization %}
+            <div class="col-4">
+                <a href="{% url 'organization_detail_url' organization.slug %}" class="organization-item">{{ organization.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 <div class="add-organization">
-    <a href="{% url 'organization_create_url' %}" class="btn btn-secondary">Add Organization</a>
+    <a href="{% url 'organization_create_url' %}" class="btn btn-primary mt-5">Add Organization</a>
 </div>
 <div class="username">
-<!--    {{ request.user.get_profile.phone }}-->
-<!--    {{ request.user.father_name }} {{ request.user.last_name }} {{ request.user.first_name }}-->
     {{ user.last_name }}
     {{ user.first_name|slice:":1" }}.
     {{ user.surname|slice:":1" }}.

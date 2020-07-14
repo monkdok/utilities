@@ -89,6 +89,7 @@ class PaymentCreate(View):
         form = PaymentCreateForm()
         organization = Organization.objects.get(slug=slug)
         payments = Payment.objects.filter(organization=organization)
+        payment_period = date.today()
         if len(payments) > 0:
             last_payment = Payment.objects.latest('id')
         else:
@@ -97,6 +98,7 @@ class PaymentCreate(View):
             'form': form,
             'organization': organization,
             'last_payment': last_payment,
+            'payment_period': payment_period,
         }
         return render(request, 'payments/payment_create.html', context)
 
@@ -106,12 +108,12 @@ class PaymentCreate(View):
         if form.is_valid():
             form = form.save(commit=False)
             form.organization = organization
-            if form.current_counter_value and form.previous_counter_value:
+            if form.current_counter_value > form.previous_counter_value:
                 form.difference = form.current_counter_value - form.previous_counter_value
-                form.amount = form.difference * organization.tariff
+                form.price = form.difference * organization.tariff
             form.author = self.request.user
             form.save()
-            return redirect('organization_list_url')
+            return HttpResponseRedirect(reverse('payment_detail_url', kwargs={'pk': form.id}))
         else:
             print('=================not valid')
 
@@ -130,7 +132,6 @@ class PaymentList(View):
 class PaymentDetail(View):
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
-        organization = payment.organization
         context = {
             'payment': payment,
 
@@ -147,6 +148,23 @@ class PaymentArchive(View):
             'organization': organization,
         }
         return render(request, 'payments/payment_archive.html', context)
+
+
+class PaymentUpdate(UpdateView):
+    model = Payment
+    template_name = 'payments/Payment_update.html'
+    form_class = PaymentCreateForm
+
+    def get_success_url(self):
+        return reverse('payment_list_url')
+
+
+class PaymentDelete(DeleteView):
+    model = Payment
+    template_name = 'payments/payment_delete.html'
+
+    def get_success_url(self):
+        return reverse('organization_list_url')
 
 
 class CustomUserView(View):
