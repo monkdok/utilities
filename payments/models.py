@@ -107,3 +107,22 @@ def payment_in_order_post_save(sender, instance, **kwargs):
 
 
 post_save.connect(payment_in_order_post_save, PaymentInOrder)
+
+
+class PaymentInCart(models.Model):
+    session_key = models.CharField(max_length=128, blank=True, null=True, default=None)
+    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, blank=True, null=True, default=None, on_delete=models.CASCADE, related_name='payment_in_cart')
+    price_per_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    def __str__(self):
+        created = date.today()
+        self.created = '{}-{}-{}'.format(created.day, created.month, created.year)
+        return '{}-{}'.format(self.payment.organization.title, self.created)
+
+    def save(self, *args, **kwargs):
+        self.created = '{}-{}-{}'.format(date.day, date.month, date.year)
+        self.price_per_payment = self.payment.price
+        super(PaymentInCart, self).save(*args, **kwargs)

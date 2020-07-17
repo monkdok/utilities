@@ -8,8 +8,8 @@
     <p id="counter-values">counter values: {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)</p>
     <p id="difference">Difference: {{ payment.difference }} {{ payment.organization.measurement_units }}.</p>
     <p id="price">Price: {{ payment.price }} hrn.</p>
-<a href="{% url 'payment_delete_url' payment.pk %}"><button>Delete</button></a>
-<a href="" class="btn btn-primary" id="btn-add-to-cart"
+<a href="{% url 'payment_delete_url' payment.pk %}"><button class="btn btn-danger">Delete</button></a>
+<!--<a href="" class="btn btn-primary" id="btn-add-to-cart"
    data-organization="{{ payment.organization }}"
    data-payment-period="{{ payment.payment_period }}"
    data-date="{{ payment.date }}"
@@ -18,5 +18,18 @@
    data-current-value="{{ payment.current_counter_value }}"
    data-difference="{{ payment.difference }}"
    data-units="{{ payment.organization.measurement_units }}"
-   data-price="{{ payment.price }}">Add to Cart</a>
+   data-price="{{ payment.price }}"
+   data-url="{% url 'cart_adding_url' payment.pk %}"
+   data-pk="{{ payment.pk }}"
+   data-csrf="{% csrf_token %}">Add to Cart</a>-->
+
+    <form action="{% url 'cart_adding_url' payment.pk %}" class="form-group" id="add-to-cart-form">{% csrf_token %}
+        <input type="hidden" id="form-organization" value="{{ payment.organization }}">
+        <input type="hidden" id="form-previous_value" value="{{ payment.previous_counter_value }}">
+        <input type="hidden" id="form-current_value" value="{{ payment.current_counter_value }}">
+        <input type="hidden" id="form-difference" value="{{ payment.difference }}">
+        <input type="hidden" id="form-units" value="{{ payment.organization.measurement_units }}">
+        <input type="hidden" id="form-price" value="{{ payment.price }}">
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
 {% endblock %}

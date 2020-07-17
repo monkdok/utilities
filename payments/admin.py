@@ -52,3 +52,11 @@ class PaymentInOrderAdmin(admin.ModelAdmin):
 
     class Meta:
         model = PaymentInOrder
+
+
+@admin.register(PaymentInCart)
+class PaymentInCartAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in PaymentInCart._meta.fields]
+
+    class Meta:
+        model = PaymentInCart

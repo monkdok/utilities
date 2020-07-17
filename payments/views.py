@@ -1,3 +1,4 @@
+import json
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -8,6 +9,27 @@ from datetime import date
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import View, DetailView, DeleteView, UpdateView
 from .forms import *
+
+
+class CustomUserView(View):
+    def get(self, request):
+        form = CustomUserForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'payments/personal_data.html', context)
+
+    def post(self, request):
+        form = CustomUserForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = self.request.user
+            print('BEFORE SAVE')
+            form.save()
+            print('user==========', form)
+            return redirect('organization_list_url')
+        else:
+            print('NOT VALID')
 
 
 class OrganizationCreate(View):
@@ -132,6 +154,9 @@ class PaymentList(View):
 class PaymentDetail(View):
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.cycle_key()
         context = {
             'payment': payment,
 
@@ -167,22 +192,24 @@ class PaymentDelete(DeleteView):
         return reverse('organization_list_url')
 
 
-class CustomUserView(View):
-    def get(self, request):
-        form = CustomUserForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'payments/personal_data.html', context)
-
-    def post(self, request):
-        form = CustomUserForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.user = self.request.user
-            print('BEFORE SAVE')
-            form.save()
-            print('user==========', form)
-            return redirect('organization_list_url')
+class CartAdding(View):
+    def post(self, request, pk):
+        data = {}
+        session_key = request.session.session_key
+        payment = Payment.objects.get(pk=pk)
+        payments_in_cart = PaymentInCart.objects.all()
+        new_payment, created = PaymentInCart.objects.get_or_create(session_key=session_key, payment_id=pk)
+        total_payments = PaymentInCart.objects.filter(session_key=session_key).count()
+        payments = PaymentInCart.objects.filter(session_key=session_key)
+        # data['total_payments'] = total_payments
+        if new_payment:
+            data['exist'] = True
         else:
-            print('NOT VALID')
+            data['exist'] = False
+        print('exist:', data['exist'])
+        context = {
+            'payment': payment,
+        }
+        data['payment'] = render_to_string('payments/snippets/append_to_cart.html', context, request)
+        data['count'] = total_payments
+        return JsonResponse(data)

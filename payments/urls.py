@@ -18,6 +18,7 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
+    path('user-profile/', CustomUserView.as_view(), name="custom_profile_url"),
     path('accounts/', include('allauth.urls')),
     path('', OrganizationList.as_view(), name="organization_list_url"),
     path('create-organization/', OrganizationCreate.as_view(), name="organization_create_url"),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('archive/<str:slug>', PaymentArchive.as_view(), name="payment_archive_url"),
     path('payment/<int:pk>', PaymentDetail.as_view(), name="payment_detail_url"),
     path('payment/delete/<int:pk>', PaymentDelete.as_view(), name="payment_delete_url"),
-    path('user-profile/', CustomUserView.as_view(), name="custom_profile_url"),
+    path('cart/add/<int:pk>', CartAdding.as_view(), name="cart_adding_url"),
 
 
 ]
