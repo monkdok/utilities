@@ -38,7 +38,8 @@
                 <h4>{{ payment.payment.organization.title }}</h4>
                 values: {{ payment.payment.previous_counter_value }} - {{ payment.payment.current_counter_value }}<br>
                 difference: {{ payment.payment.difference }} {{ payment.payment.organization.measurement_units }}<br>
-                price: {{ payment.price_per_payment }} UAH <a href="" class="delete-item">X</a><br><br>
+                price: {{ payment.price_per_payment }} UAH <a href="{% url 'cart_delete_url' %}" class="delete-item" data-payments-in-cart-pk="{{ payment.pk }}">X
+              </a><br><br>
               </li>
               {% endfor %}
             </ul>

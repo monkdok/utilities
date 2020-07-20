@@ -197,19 +197,34 @@ class CartAdding(View):
         data = {}
         session_key = request.session.session_key
         payment = Payment.objects.get(pk=pk)
-        payments_in_cart = PaymentInCart.objects.all()
         new_payment, created = PaymentInCart.objects.get_or_create(session_key=session_key, payment_id=pk)
         total_payments = PaymentInCart.objects.filter(session_key=session_key).count()
-        payments = PaymentInCart.objects.filter(session_key=session_key)
-        # data['total_payments'] = total_payments
-        if new_payment:
+        payments_in_cart = PaymentInCart.objects.filter(session_key=session_key)
+        if not created:
             data['exist'] = True
         else:
             data['exist'] = False
-        print('exist:', data['exist'])
         context = {
-            'payment': payment,
+            'payment': new_payment,
+            'payments': payments_in_cart,
         }
+        print('payment:', payment)
         data['payment'] = render_to_string('payments/snippets/append_to_cart.html', context, request)
         data['count'] = total_payments
         return JsonResponse(data)
+
+
+class CartItemDelete(View):
+    def post(self, request):
+        data = {}
+        session_key = request.session.session_key
+        is_delete = request.POST.get('is_delete')
+        pk = request.POST.get('pk')
+        payment_in_cart_to_delete = PaymentInCart.objects.get(pk=pk)
+        payment_in_cart_to_delete.delete()
+        total_payments = PaymentInCart.objects.filter(session_key=session_key).count()
+        print('total_payments:', total_payments)
+        data['deleted'] = True
+        data['count'] = total_payments
+        return JsonResponse(data)
+

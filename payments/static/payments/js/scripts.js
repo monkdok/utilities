@@ -1,8 +1,82 @@
 $(document).ready(function () {
+    let cartContainer = $('.cart-container')
+    let cartItems = $('.cart-items')
+
+
     function appendToCart(data) {
         $('#total-payments').text('(' + data.count + ')')
-        $('.cart-items ul').append(data.payment)
+        $('#cart-snippet').append(data.payment)
     }
+
+
+    function toggleCart() {
+        cartItems.toggle()
+    }
+
+
+    function cartUpdate(pk, url, is_delete=false) {
+        let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val()
+        $.ajax({
+//            url: $('#add-to-cart-form').attr('action'),
+            url: url,
+            data: {
+            'is_delete': is_delete,
+            'pk': pk,
+            'csrfmiddlewaretoken': csrf_token,
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.exist == true)  {
+                    alert('Payment is already in Cart')
+                    console.log('data.exist == true')
+                } else {
+                    if(data.payment || data.deleted) {
+                    appendToCart(data)
+                    }
+                }
+            }
+        })
+    }
+
+// Add item to cart
+    $('form#add-to-cart-form').on('submit', function(e) {
+        e.preventDefault()
+        let organization = $('#form-organization').val()
+        let paymentPeriod = $('#organization').val()
+        let date = $('#organization').val()
+        let tariff = $('#organization').val()
+        let previousValue = $('#form-previous_value').val()
+        let currentValue = $('#form-current_value').val()
+        let difference = $('#form-difference').val()
+        let units = $('#form-units').val()
+        let price = $('#form-price').val()
+        let url = $(this).attr('action')
+        cartUpdate('0', url)
+    })
+
+
+// Toggle cart
+    $('#cart').on('click', function(e) {
+        e.preventDefault()
+        toggleCart()
+    })
+
+
+// Delete cart item
+    $(document).on('click', '.delete-item', function(e) {
+        e.preventDefault()
+        console.log('clicked')
+        let paymentInCartId = $(this).attr('data-payments-in-cart-pk')
+        let url = $(this).attr('href')
+        cartUpdate(paymentInCartId, url, is_delete=true)
+        $(this).closest('li').remove()
+    })
+})
+
+
+
+
 
     /*let addButton = $('#btn-add-to-cart')
     addButton.on('click', function(e) {
@@ -22,69 +96,3 @@ $(document).ready(function () {
 *//*
         let url = addButton.attr('data-url')
          let pk = addButton.attr('data-pk')*/
-    $('form#add-to-cart-form').on('submit', function(e) {
-        e.preventDefault()
-        let organization = $('#form-organization').val()
-        let paymentPeriod = $('#organization').val()
-        let date = $('#organization').val()
-        let tariff = $('#organization').val()
-        let previousValue = $('#form-previous_value').val()
-        let currentValue = $('#form-current_value').val()
-        let difference = $('#form-difference').val()
-        let units = $('#form-units').val()
-        let price = $('#form-price').val()
-        let url = $(this).attr('action')
-        let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val()
-        $.ajax({
-            url: url,
-            data: {
-            'organization': organization,
-            'csrfmiddlewaretoken': csrf_token,
-            },
-            type: 'post',
-            dataType: 'json',
-            success: function (data) {
-                if (data.exist == true)  {
-                    alert('Payment is already in Cart')
-                } else {
-                    alert('else')
-                    if(data.payment) {
-                    appendToCart(data)
-                    }
-                }
-            }
-        })
-    })
-
-
-    let cartContainer = $('.cart-container')
-    let cartItems = $('.cart-items')
-
-    function toggleCart() {
-        cartItems.toggle()
-    }
-
-    $('#cart').on('click', function(e) {
-        e.preventDefault()
-        toggleCart()
-    })
-
-    /*cartContainer.on('mouseover', function(e) {
-        e.preventDefault()
-        toggleCart()
-    })
-
-    cartContainer.on('mouseout', function(e) {
-        e.preventDefault()
-        toggleCart()
-    })*/
-
-    $(document).on('click', '.delete-item', function(e) {
-        e.preventDefault()
-        $(this).closest('li').remove()
-    })
-})
-
-
-
-
