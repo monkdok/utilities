@@ -72,6 +72,15 @@ $(document).ready(function () {
         cartUpdate(paymentInCartId, url, is_delete=true)
         $(this).closest('li').remove()
     })
+
+    function calculation() {
+        let totalPrice = 0
+        $('.price').each(function(){
+            totalPrice += parseFloat($(this).text())
+        })
+        return totalPrice.toFixed(2)
+    }
+    $('#total-price').text(calculation())
 })
 
 

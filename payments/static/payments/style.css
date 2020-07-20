@@ -91,3 +91,10 @@ html, body {
     margin-top: 10px;
 }
 
+.checkout-items-wrapper {
+    margin-top: 15px;
+}
+
+.checkout-item {
+    margin: 35px auto;
+}

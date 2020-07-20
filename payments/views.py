@@ -228,3 +228,13 @@ class CartItemDelete(View):
         data['count'] = total_payments
         return JsonResponse(data)
 
+
+class Checkout(View):
+    def get(self, request):
+        session_key = request.session.session_key
+        print('session_key', session_key)
+        payments = PaymentInCart.objects.filter(session_key=session_key)
+        context = {
+            'payments': payments,
+        }
+        return render(request, 'payments/checkout.html', context)
