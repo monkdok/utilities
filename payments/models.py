@@ -24,7 +24,7 @@ class Organization(models.Model):
     MEASUREMENT_UNITS_CHOICES = (('кВт/ч', 'кВт/ч'), ('м3', 'м3'))
 
     id = models.AutoField(primary_key=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default='dok_jf')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     first_name = models.CharField(max_length=100, blank=True, unique=False)
     second_name = models.CharField(max_length=100, blank=True, unique=False)
     date = models.DateField(auto_now_add=True)
@@ -45,7 +45,7 @@ class Organization(models.Model):
 
 
 class Order(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default='dok_jf')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     created = models.DateField(auto_now_add=True, auto_now=False)
     updated = models.DateField(auto_now_add=False, auto_now=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -60,7 +60,7 @@ class Order(models.Model):
 
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default='dok_jf')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='', null=True)
     date = models.DateField(auto_now_add=True)
     payment_period = models.CharField(max_length=10, blank=True, unique=False)
     difference = models.PositiveIntegerField(default=0, blank=True, null=True)
@@ -78,51 +78,53 @@ class Payment(models.Model):
         return '{}-{}'.format(self.organization, self.date)
 
 
-class PaymentInOrder(models.Model):
-    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, blank=True, null=True, default=None, on_delete=models.CASCADE)
-    price_per_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    created = models.DateTimeField(auto_now_add=True, auto_now=False)
-    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
-
-    def __str__(self):
-        created = date.today()
-        self.created = '{}-{}-{}'.format(created.day, created.month, created.year)
-        return '{}-{}'.format(self.payment.organization.title, self.created)
-
-    def save(self, *args, **kwargs):
-        self.created = '{}-{}-{}'.format(date.day, date.month, date.year)
-        self.price_per_payment = self.payment.price
-        super(PaymentInOrder, self).save(*args, **kwargs)
-
-
-def payment_in_order_post_save(sender, instance, **kwargs):
-    order = instance.order
-    all_payments_in_order = PaymentInOrder.objects.filter(order=order)
-    order_total_price = 0
-    for payment in all_payments_in_order:
-        order_total_price += payment.price_per_payment
-    order.total_price = order_total_price
-    order.save(force_update=True)
-
-
-post_save.connect(payment_in_order_post_save, PaymentInOrder)
+# class PaymentInOrder(models.Model):
+#     order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.CASCADE)
+#     payment = models.ForeignKey(Payment, blank=True, null=True, default=None, on_delete=models.CASCADE)
+#     price_per_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+#     created = models.DateTimeField(auto_now_add=True, auto_now=False)
+#     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+#
+#     def __str__(self):
+#         created = date.today()
+#         self.created = '{}-{}-{}'.format(created.day, created.month, created.year)
+#         return '{}-{}'.format(self.payment.organization.title, self.created)
+#
+#     def save(self, *args, **kwargs):
+#         self.created = '{}-{}-{}'.format(date.day, date.month, date.year)
+#         self.price_per_payment = self.payment.price
+#         super(PaymentInOrder, self).save(*args, **kwargs)
+#
+#
+# def payment_in_order_post_save(sender, instance, **kwargs):
+#     order = instance.order
+#     all_payments_in_order = PaymentInOrder.objects.filter(order=order)
+#     order_total_price = 0
+#     for payment in all_payments_in_order:
+#         order_total_price += payment.price_per_payment
+#     order.total_price = order_total_price
+#     order.save(force_update=True)
+#
+#
+# post_save.connect(payment_in_order_post_save, PaymentInOrder)
 
 
 class PaymentInCart(models.Model):
     session_key = models.CharField(max_length=128, blank=True, null=True, default=None)
-    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT)
     payment = models.ForeignKey(Payment, blank=True, null=True, default=None, on_delete=models.CASCADE, related_name='payment_in_cart')
     price_per_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+    is_ordered = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         created = date.today()
-        self.created = '{}-{}-{}'.format(created.day, created.month, created.year)
+        self.created = '{}-{}-{}'.format(created.year, created.month, created.day)
         return '{}-{}'.format(self.payment.organization.title, self.created)
 
     def save(self, *args, **kwargs):
-        self.created = '{}-{}-{}'.format(date.day, date.month, date.year)
+        created = date.today()
+        self.created = '{}-{}-{}'.format(created.year, created.month, created.day)
         self.price_per_payment = self.payment.price
         super(PaymentInCart, self).save(*args, **kwargs)

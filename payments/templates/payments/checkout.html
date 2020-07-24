@@ -2,20 +2,23 @@
 
 {% block content %}
 <div class="checkout-items-wrapper text-left">
-    {% for payment in payments_in_cart %}
+    <form action="{% url 'checkout_url' %}" method="post"> {% csrf_token %}
+        {% for payment in payments_in_cart %}
+        <input type="hidden" name="{{ payment.payment.organization.title }}" value="{{ payment.id }}">
         <div class="checkout-item">
             <h4>{{ payment.payment.organization.title }}</h4>
             values: {{ payment.payment.previous_counter_value }} - {{ payment.payment.current_counter_value }}<br>
             difference: {{ payment.payment.difference }} {{ payment.payment.organization.measurement_units }}<br>
             price: <span class="price">{{ payment.price_per_payment }}</span> UAH
         </div>
-    {% endfor %}
-    <div class="total">
-        <h4>Total: <span id="total-price"></span> UAH</h4>
-    </div>
-    <div class="text-right">
-        <a href=""><button class="btn btn-success">Save</button></a>
-    </div>
+        {% endfor %}
+        <div class="total">
+            <h4>Total: <span id="total-price"></span> UAH</h4>
+        </div>
+        <div class="text-right">
+            <input type="submit" class="btn btn-success" value="Save">
+        </div>
+    </form>
 </div>
 <!--<form method="post">-->
 <!--    {% csrf_token %}-->

@@ -197,9 +197,9 @@ class CartAdding(View):
         data = {}
         session_key = request.session.session_key
         payment = Payment.objects.get(pk=pk)
-        new_payment, created = PaymentInCart.objects.get_or_create(session_key=session_key, payment_id=pk)
-        total_payments = PaymentInCart.objects.filter(session_key=session_key).count()
-        payments_in_cart = PaymentInCart.objects.filter(session_key=session_key)
+        new_payment, created = PaymentInCart.objects.get_or_create(session_key=session_key, payment_id=pk, is_ordered=False)
+        total_payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False).count()
+        payments_in_cart = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False)
         if not created:
             data['exist'] = True
         else:
@@ -222,7 +222,7 @@ class CartItemDelete(View):
         pk = request.POST.get('pk')
         payment_in_cart_to_delete = PaymentInCart.objects.get(pk=pk)
         payment_in_cart_to_delete.delete()
-        total_payments = PaymentInCart.objects.filter(session_key=session_key).count()
+        total_payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False).count()
         print('total_payments:', total_payments)
         data['deleted'] = True
         data['count'] = total_payments
@@ -232,9 +232,26 @@ class CartItemDelete(View):
 class Checkout(View):
     def get(self, request):
         session_key = request.session.session_key
-        print('session_key', session_key)
-        payments = PaymentInCart.objects.filter(session_key=session_key)
+        payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False)
         context = {
             'payments': payments,
         }
         return render(request, 'payments/checkout.html', context)
+
+    def post(self, request):
+        data = request.POST
+        order = Order.objects.create(author=self.request.user)
+        session_key = request.session.session_key
+        payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False)
+        total_price = 0
+        for name, value in data.items():
+            if name != 'csrfmiddlewaretoken':
+                payment = PaymentInCart.objects.get(id=value)
+                total_price += payment.payment.price
+                payment.order = order
+                payment.is_ordered = True
+                payment.save()
+                print(payment.payment.organization.title, payment.order)
+        order.total_price = total_price
+        order.save()
+        return redirect('organization_list_url')

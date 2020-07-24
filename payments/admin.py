@@ -8,8 +8,8 @@ from .models import *
 # admin.site.register(CustomUser)
 
 
-class PaymentInOrderInline(admin.TabularInline):
-    model = PaymentInOrder
+class PaymentInCartInline(admin.TabularInline):
+    model = PaymentInCart
 
 
 @admin.register(CustomUser)
@@ -37,26 +37,27 @@ class PaymentAdmin(admin.ModelAdmin):
         model = Payment
 
 
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Order._meta.fields]
-    inlines = [PaymentInOrderInline]
-
-    class Meta:
-        model = Order
-
-
-@admin.register(PaymentInOrder)
-class PaymentInOrderAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in PaymentInOrder._meta.fields]
-
-    class Meta:
-        model = PaymentInOrder
-
-
 @admin.register(PaymentInCart)
 class PaymentInCartAdmin(admin.ModelAdmin):
     list_display = [field.name for field in PaymentInCart._meta.fields]
 
     class Meta:
         model = PaymentInCart
+
+
+# @admin.register(PaymentInOrder)
+# class PaymentInOrderAdmin(admin.ModelAdmin):
+#     list_display = [field.name for field in PaymentInOrder._meta.fields]
+#
+#     class Meta:
+#         model = PaymentInOrder
+
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Order._meta.fields]
+    inlines = [PaymentInCartInline]
+
+    class Meta:
+        model = Order
