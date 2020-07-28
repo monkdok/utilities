@@ -1,0 +1,17 @@
+{% extends 'payments/base.html' %}
+
+{% block content %}
+
+<h2>{{ user }}</h2>
+<div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Orders
+  </button>
+    <div class="dropdown-menu">
+        {% for order in user.orders.all %}
+            <a href="{% url 'order_detail_url' order.pk %}" class="dropdown-item">{{ order }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

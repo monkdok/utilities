@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 import json
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login
@@ -11,7 +12,8 @@ from django.views.generic import View, DetailView, DeleteView, UpdateView
 from .forms import *
 
 
-class CustomUserView(View):
+class CustomUserView(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request):
         form = CustomUserForm()
         context = {
@@ -32,7 +34,8 @@ class CustomUserView(View):
             print('NOT VALID')
 
 
-class OrganizationCreate(View):
+class OrganizationCreate(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request):
         form = OrganizationCreateForm()
         context = {
@@ -51,7 +54,8 @@ class OrganizationCreate(View):
             print('not valid')
 
 
-class OrganizationList(View):
+class OrganizationList(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request):
         if CustomUser.objects.all():
             user = CustomUser.objects.get(user=self.request.user)
@@ -65,10 +69,11 @@ class OrganizationList(View):
         return render(request, 'payments/organization_list.html', context)
 
 
-class OrganizationDetail(View):
+class OrganizationDetail(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request, slug):
         form = OrganizationCreateForm()
-        if CustomUser.objects.all():
+        if CustomUser:
             user = CustomUser.objects.get(user=self.request.user)
         else:
             user = None
@@ -89,7 +94,8 @@ class OrganizationDetail(View):
         return render(request, 'payments/organization_detail.html', context)
 
 
-class OrganizationUpdate(UpdateView):
+class OrganizationUpdate(LoginRequiredMixin, UpdateView):
+    login_url = 'account_login'
     model = Organization
     template_name = 'payments/organization_update.html'
     form_class = OrganizationCreateForm
@@ -98,7 +104,8 @@ class OrganizationUpdate(UpdateView):
         return reverse('organization_list_url')
 
 
-class OrganizationDelete(DeleteView):
+class OrganizationDelete(LoginRequiredMixin, DeleteView):
+    login_url = 'account_login'
     model = Organization
     template_name = 'payments/organization_delete.html'
 
@@ -106,7 +113,8 @@ class OrganizationDelete(DeleteView):
         return reverse('organization_list_url')
 
 
-class PaymentCreate(View):
+class PaymentCreate(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request, slug):
         form = PaymentCreateForm()
         organization = Organization.objects.get(slug=slug)
@@ -140,7 +148,8 @@ class PaymentCreate(View):
             print('=================not valid')
 
 
-class PaymentList(View):
+class PaymentList(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request):
         organization = Organization.objects.all()
         form = OrganizationCreateForm()
@@ -151,7 +160,8 @@ class PaymentList(View):
         return render(request, 'payments/organization_list.html', context)
 
 
-class PaymentDetail(View):
+class PaymentDetail(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
         session_key = request.session.session_key
@@ -164,7 +174,8 @@ class PaymentDetail(View):
         return render(request, 'payments/payment_detail.html', context)
 
 
-class PaymentArchive(View):
+class PaymentArchive(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request, slug):
         organization = Organization.objects.get(slug=slug)
         payments = Payment.objects.filter(organization=organization)
@@ -175,7 +186,8 @@ class PaymentArchive(View):
         return render(request, 'payments/payment_archive.html', context)
 
 
-class PaymentUpdate(UpdateView):
+class PaymentUpdate(LoginRequiredMixin, UpdateView):
+    login_url = 'account_login'
     model = Payment
     template_name = 'payments/Payment_update.html'
     form_class = PaymentCreateForm
@@ -184,7 +196,8 @@ class PaymentUpdate(UpdateView):
         return reverse('payment_list_url')
 
 
-class PaymentDelete(DeleteView):
+class PaymentDelete(LoginRequiredMixin, DeleteView):
+    login_url = 'account_login'
     model = Payment
     template_name = 'payments/payment_delete.html'
 
@@ -229,7 +242,8 @@ class CartItemDelete(View):
         return JsonResponse(data)
 
 
-class Checkout(View):
+class Checkout(LoginRequiredMixin, View):
+    login_url = 'account_login'
     def get(self, request):
         session_key = request.session.session_key
         payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False)
@@ -255,3 +269,24 @@ class Checkout(View):
         order.total_price = total_price
         order.save()
         return redirect('organization_list_url')
+
+
+class ProfileSettings(LoginRequiredMixin, View):
+    login_url = 'account_login'
+    def get(self, request):
+        user = CustomUser.objects.get(user=self.request.user)
+        temp = 'profile'
+        context = {
+            'user': user,
+        }
+        return render(request, 'payments/profile_settings.html', context)
+
+
+class OrderDetailView(LoginRequiredMixin, View):
+    login_url = 'account_login'
+    def get(self, request, pk):
+        order = Order.objects.get(pk=pk)
+        context = {
+            'order': order,
+        }
+        return render(request, 'payments/order_detail.html', context)

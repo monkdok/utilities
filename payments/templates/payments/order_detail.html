@@ -1,0 +1,7 @@
+{% extends 'payments/base.html' %}
+
+{% block content %}
+{% for payment in order.payments_in_cart.all %}
+<a href="{% url 'payment_detail_url' payment.payment.pk %}"><button class="btn btn-primary">{{ payment }}</button></a>
+{% endfor %}
+{% endblock %}

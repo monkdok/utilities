@@ -1,8 +1,11 @@
+{% extends 'payments/base.html' %}
+
+{% block content %}
 <h3>{{ organization }}</h3>
 {% for payment in payments %}
 <div class="counter-values">
     <a href="{% url 'payment_detail_url' payment.id %}">
-    <button>
+    <button class="btn btn-primary">
         {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)
     </button>
 </a>
@@ -10,3 +13,4 @@
 
 <br>
 {% endfor %}
+{% endblock %}

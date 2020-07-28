@@ -17,13 +17,27 @@ class CustomUser(models.Model):
     address = models.CharField(max_length=100, blank=True, unique=False)
 
     def __str__(self):
-        return '{}-{}-{}'.format(self.last_name, self.first_name, self.surname)
+        return '{} {} {}'.format(self.last_name, self.first_name, self.surname)
+
+
+class Icons(models.Model):
+    icon = models.ImageField(upload_to='payments/static/payments/media/img/')
+
+    def __str__(self):
+        return str(self.id)
+    
+
+    class Meta:
+        verbose_name = 'Icon'
+        verbose_name_plural = 'Icons'
+
 
 
 class Organization(models.Model):
     MEASUREMENT_UNITS_CHOICES = (('кВт/ч', 'кВт/ч'), ('м3', 'м3'))
 
     id = models.AutoField(primary_key=True)
+    icon = models.OneToOneField(Icons, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT, related_name='organization')
     author = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     first_name = models.CharField(max_length=100, blank=True, unique=False)
     second_name = models.CharField(max_length=100, blank=True, unique=False)
@@ -45,7 +59,7 @@ class Organization(models.Model):
 
 
 class Order(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=False, related_name='orders')
     created = models.DateField(auto_now_add=True, auto_now=False)
     updated = models.DateField(auto_now_add=False, auto_now=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -111,7 +125,7 @@ class Payment(models.Model):
 
 class PaymentInCart(models.Model):
     session_key = models.CharField(max_length=128, blank=True, null=True, default=None)
-    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT)
+    order = models.ForeignKey(Order, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT, related_name='payments_in_cart')
     payment = models.ForeignKey(Payment, blank=True, null=True, default=None, on_delete=models.CASCADE, related_name='payment_in_cart')
     price_per_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -128,3 +142,5 @@ class PaymentInCart(models.Model):
         self.created = '{}-{}-{}'.format(created.year, created.month, created.day)
         self.price_per_payment = self.payment.price
         super(PaymentInCart, self).save(*args, **kwargs)
+
+

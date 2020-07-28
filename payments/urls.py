@@ -32,6 +32,8 @@ urlpatterns = [
     path('cart/add/<int:pk>', CartAdding.as_view(), name="cart_adding_url"),
     path('cart/delete/', CartItemDelete.as_view(), name="cart_delete_url"),
     path('checkout/', Checkout.as_view(), name="checkout_url"),
+    path('profile-settings/', ProfileSettings.as_view(), name="profile_settings_url"),
+    path('order/<int:pk>/', OrderDetailView.as_view(), name="order_detail_url"),
 
 
 ]

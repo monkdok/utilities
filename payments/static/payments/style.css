@@ -1,100 +1,262 @@
-html, body {
-    text-align: center;
-    background-color: #f7f7f7;
-    color: #161616;
-    height: 100%;
-    min-width: 350px;
-    font-family: 'Roboto', sans-serif;
-/*
+html,
+body {
+  text-align: center;
+  background-color: #f6f7f9;
+  color: #161616;
+  height: 100%;
+  min-width: 200px;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  /*
     font-family: 'Ubuntu', sans-serif;
 */
-
 }
+
+.navbar {
+  margin-bottom: 18px;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+input {
+  border: 0 none;
+  /* border-radius: 8px; */
+  border: none;
+  border-bottom: 1px solid #696e78;
+  background-color: #ffffff;
+  padding-left: 15px;
+  height: 40px;
+}
+
+input:focus {
+    border-bottom: 2px solid #655feb;
+  /* border: 1px solid #655feb; */
+  /* box-shadow: 0 0 0 0.2rem rgba(114, 38, 255, 0.5) !important; */
+}
+
+.archive a {
+  text-decoration: none !important;
+  color: #696e78 !important;
+}
+
+.btn-primary {
+  color: white !important;
+  border-radius: 30px;
+  border-color: #605f68;
+  background-color: #655feb;
+  box-shadow: 0px 14px 25px -6px rgba(147, 143, 230, 1);
+}
+
+.btn-primary:hover {
+  color: white;
+  background-color: #4e48bd;
+  border-color: #655feb;
+}
+
+.btn-primary:active {
+  color: white;
+  background-color: #4e48bd !important;
+  border-color: #655feb !important;
+  box-shadow: 0 0 0 0.2rem rgba(114, 38, 255, 0.5) !important;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(114, 38, 255, 0.5);
+  background-color: #4e48bd !important;
+  border-color: #655feb !important;
+}
+
+.container-fluid {
+  width: 100%;
+  max-width: 1024px;
+  min-width: 400px;
+  display: inline-block;
+  text-align: center;
+  margin: auto;
+  padding: 0 30px;
+  overflow-wrap: break-word;
+}
+
+.services {
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  position: relative;
+  /* left: 10px; */
+  /* margin-top: 10px; */
+  color: #696e78;
+}
+
+.service-title {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  display: flex;
+  justify-content: start;
+  max-width: 350px;
+  margin: 8px auto 15px auto;
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  position: relative;
+  /* left: 10px; */
+  /* margin-top: 10px; */
+  color: #696e78;
+}
+
+.title {
+  display: flex;
+  justify-content: start;
+}
+
+.dotted-menu {
+  border: 0 none;
+  background: none;
+  overflow: visible;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.dotted-menu:focus {
+  outline: none !important;
+}
+
+.dropdown-menu {
+  border: #f8fbff solid 1px;
+  box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
+}
+
+.info-wrapper {
+  max-width: 350px;
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
 /*
-.organizations {
-    display: block;
-    margin-top: 30px;
-}*/
+  height: 100%;
+*/
+  margin: 8px auto 15px auto;
+  background-color: #ffffff;
+  color: #b2afbd;
+  position: relative;
+  border-radius: 13px;
+  border: #f8fbff solid 1px;
+  display: block;
+  text-decoration: none;
+  box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
+}
+
+svg {
+  margin-bottom: 2px;
+}
+
+.info {
+  margin: 20px;
+}
+
+.info-values {
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  color: #696e78;
+  float: right;
+}
+
+.values-units {
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: #b2afbd;
+}
+
+org-item-apper {
+  justify-content: center;
+  align-items: center;
+}
+.col-6,
+.col-sm-4,
+.col-md-3,
+.col-lg-3 {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
 
 .organization-item {
-    height: 150px;
-    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(56,56,56,1) 100%);
-/*
-    background-color: #333;
-*/
-    color: white;
-/*
-    box-sizing: border-box;
-*/
-    position: relative;
-    padding: 5px;
-    margin-top: 30px;
-    border-radius: 10px;
-    display: block;
-    text-decoration: none;
-    padding-top: 54px;
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  height: 200px;
+  margin: 8px auto 15px auto;
+  padding-top: 77px;
+  background-color: #ffffff;
+  color: #b2afbd;
+  position: relative;
+  border-radius: 13px;
+  border: #f8fbff solid 1px;
+  display: block;
+  text-decoration: none;
+  box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
 }
 
 .organization-item:hover {
-    color: orange;
-    background-color: #2b2b2b;
-    text-decoration: none;
-/*
-    box-shadow: 0px 0px 35px -6px rgba(0,0,0,0.75);
-*/
-    transform: scale(1.02);
+  color: white;
+  background: linear-gradient(
+    90deg,
+    rgba(92, 92, 232, 1) 0%,
+    rgba(127, 105, 245, 1) 100%
+  );
+  text-decoration: none;
+  border: #655feb solid 1px;
+  box-shadow: 0px 24px 37px -16px rgba(147, 143, 230, 1);
+  transform: scale(1.02);
 }
 
 .organization-item:active {
-  background-color: #282828;
-  box-shadow: 0px 0px 0px 6px rgba(0,0,0,0.25);
+  color: #f6f7f9;
+  background: linear-gradient(
+    90deg,
+    rgb(79, 79, 197) 0%,
+    rgb(113, 94, 218) 100%
+  );
+  box-shadow: 0px 24px 30px -20px rgba(147, 143, 230, 1);
   text-decoration: none;
-/*
-  transform: scale(.98);
-*/
+  top: 2px;
+  transform: scale(1.01);
 }
 
 .organization-title {
-    padding-top: 54px;
-    /*position: relative;
+  padding-top: 54px;
+  /*position: relative;
     top: 50%;
     transform: translateY(-50%);*/
-
-}
-
-.container {
-    width: 100%;
-    text-align: center;
-    margin: auto;
-}
-
-.cart-container {
-    position: relative;
-    width: 300px;
 }
 
 .cart-items {
-    display: none;
-    position: absolute;
-    top: 48px;
-    width: 100%;
-    background-color: orange;
-    padding: 15px;
-    box-shadow: 0px 10px 33px -4px rgba(0,0,0,0.33);
+  display: none;
+  float: right;
+  position: absolute;
+  top: 68px;
+  right: 0;
+  width: 300px;
+  background-color: orange;
+  padding: 15px;
+  box-shadow: 0px 10px 33px -4px rgba(0, 0, 0, 0.33);
+  z-index: 2;
 }
 
 .cart-items li {
-    text-align: left;
+  text-align: left;
 }
 
 .username {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-.checkout-items-wrapper {
-    margin-top: 15px;
+.checkout-items-apper {
+  margin-top: 15px;
 }
 
 .checkout-item {
-    margin: 35px auto;
+  margin: 35px auto;
 }

@@ -2,22 +2,59 @@
 
 {% block content %}
 {% if user %}
-<h3>{{ organization.title }}</h3>
-    <div class="info">
-        <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
-        <p>tariff: {{ organization.tariff }} hrn.</p>
-        <p>units: {{ organization.measurement_units }}.</p>
-        {% if last_payment.current_counter_value %}
-        <p>previous counter value: {{ last_payment.current_counter_value }} ({{ organization.measurement_units }}.)</p>
-        {% endif %}
+<div class="row">
+    <div class="col service-detail">
+        <div class="row">
+            <div class="col service-title text-left">
+                <div class="col title">
+                    <span class="">{{ organization.title }}</span>
+                </div>
+                <div class="archive"><a href="{% url 'payment_archive_url' organization.slug %}"><i
+                        class="fas fa-archive" style="font-size: 25px"></i></a></div>
+                <div class="dropdown dotted-menu">
+                    <button class="dotted-menu" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <svg width="1em" height="0.8em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <a href="{% url 'organization_update_url' organization.slug %}">
+                            <button class="dropdown-item" type="button">Edit</button>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'organization_delete_url' organization.slug %}">
+                            <button class="dropdown-item" type="button">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-wrapper text-left">
+            <div class="info">
+                <p>Tariff<span class="info-values">{{ organization.tariff }}<span class="values-units">
+                                hrn</span></span></p>
+                {% comment %} <p>Units<span class="info-values">{{ organization.measurement_units }}</span></p>
+                {% endcomment %}
+                {% if last_payment.current_counter_value %}
+                <p>Counter<span class="info-values">{{ last_payment.current_counter_value }}<span
+                        class="values-units"> {{ organization.measurement_units }}</span></span>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+        {% endcomment %}
+
     </div>
-<a href="{% url 'organization_update_url' organization.slug %}"><button>Edit</button></a>
-<a href="{% url 'organization_delete_url' organization.slug %}"><button>Delete</button></a>
-<a href="{% url 'payment_create_url' organization.slug %}"><button>New payment</button></a>
-<a href="{% url 'payment_archive_url' organization.slug %}"><button>Archive</button></a>
+</div>
+
+<a href="{% url 'payment_create_url' organization.slug %}" class="btn btn-primary mt-5">New payment</a>
 {% else %}
-    <div class="data-button">
-        <a href="{% url 'custom_profile_url' %}" class="btn btn-secondary">Enter personal data</a>
-    </div>
+<div class="data-button">
+    <a href="{% url 'custom_profile_url' %}" class="btn btn-secondary">Enter personal data</a>
+</div>
 {% endif %}
 {% endblock %}

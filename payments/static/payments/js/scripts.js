@@ -62,6 +62,13 @@ $(document).ready(function () {
         toggleCart()
     })
 
+    /*$(document).mouseup(function (e) {
+            if(!cartItems.is(e.target) &&
+            cartItems.has(e.target).length === 0) {
+                cartItems.hide()
+            }
+        })*/
+
 
 // Delete cart item
     $(document).on('click', '.delete-item', function(e) {
