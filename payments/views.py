@@ -14,6 +14,7 @@ from .forms import *
 
 class CustomUserView(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
         form = CustomUserForm()
         context = {
@@ -36,9 +37,12 @@ class CustomUserView(LoginRequiredMixin, View):
 
 class OrganizationCreate(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
+        icons = Icons.objects.all()
         form = OrganizationCreateForm()
         context = {
+            'icons': icons,
             'form': form,
         }
         return render(request, 'payments/organization_create.html', context)
@@ -56,6 +60,7 @@ class OrganizationCreate(LoginRequiredMixin, View):
 
 class OrganizationList(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
         if CustomUser.objects.all():
             user = CustomUser.objects.get(user=self.request.user)
@@ -71,9 +76,10 @@ class OrganizationList(LoginRequiredMixin, View):
 
 class OrganizationDetail(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request, slug):
         form = OrganizationCreateForm()
-        if CustomUser:
+        if CustomUser.user == request.user:
             user = CustomUser.objects.get(user=self.request.user)
         else:
             user = None
@@ -84,7 +90,7 @@ class OrganizationDetail(LoginRequiredMixin, View):
         else:
             last_payment = None
         context = {
-            'user': user,
+            # 'user': user,
             'organization': organization,
             'form': form,
             'payments': payments,
@@ -103,6 +109,13 @@ class OrganizationUpdate(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('organization_list_url')
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['icons'] = Icons.objects.all()
+        return context
+
 
 class OrganizationDelete(LoginRequiredMixin, DeleteView):
     login_url = 'account_login'
@@ -115,6 +128,7 @@ class OrganizationDelete(LoginRequiredMixin, DeleteView):
 
 class PaymentCreate(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request, slug):
         form = PaymentCreateForm()
         organization = Organization.objects.get(slug=slug)
@@ -150,6 +164,7 @@ class PaymentCreate(LoginRequiredMixin, View):
 
 class PaymentList(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
         organization = Organization.objects.all()
         form = OrganizationCreateForm()
@@ -162,6 +177,7 @@ class PaymentList(LoginRequiredMixin, View):
 
 class PaymentDetail(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
         session_key = request.session.session_key
@@ -176,6 +192,7 @@ class PaymentDetail(LoginRequiredMixin, View):
 
 class PaymentArchive(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request, slug):
         organization = Organization.objects.get(slug=slug)
         payments = Payment.objects.filter(organization=organization)
@@ -206,6 +223,7 @@ class PaymentDelete(LoginRequiredMixin, DeleteView):
 
 
 class CartAdding(View):
+
     def post(self, request, pk):
         data = {}
         session_key = request.session.session_key
@@ -228,6 +246,7 @@ class CartAdding(View):
 
 
 class CartItemDelete(View):
+
     def post(self, request):
         data = {}
         session_key = request.session.session_key
@@ -244,6 +263,7 @@ class CartItemDelete(View):
 
 class Checkout(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
         session_key = request.session.session_key
         payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False)
@@ -273,6 +293,7 @@ class Checkout(LoginRequiredMixin, View):
 
 class ProfileSettings(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request):
         user = CustomUser.objects.get(user=self.request.user)
         temp = 'profile'
@@ -290,3 +311,16 @@ class OrderDetailView(LoginRequiredMixin, View):
             'order': order,
         }
         return render(request, 'payments/order_detail.html', context)
+
+
+class IconSelect(View):
+
+    def get(self, request):
+        data = {}
+        pk = request.GET['pk']
+        icon = Icons.objects.get(pk=pk)
+        print('icon', icon)
+        context = {'icon': icon}
+        data['html'] = render_to_string('payments/snippets/icon_preview.html', context, request)
+        print(data['html'])
+        return JsonResponse(data)

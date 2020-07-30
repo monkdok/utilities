@@ -8,6 +8,10 @@ $(document).ready(function () {
         $('#cart-snippet').append(data.payment)
     }
 
+    function appendToHtml(data) {
+        $('.icon-preview').html(data)
+    }
+
 
     function toggleCart() {
         cartItems.toggle()
@@ -88,6 +92,31 @@ $(document).ready(function () {
         return totalPrice.toFixed(2)
     }
     $('#total-price').text(calculation())
+
+    //Getting Icon ID
+    $('.dropdown-icon').on('click', function() {
+        let pk = $(this).attr('data-icon-pk')
+        $('#icon-pk').val(pk)
+
+        let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val()
+        let url = $(this).attr('data-url')
+        $.ajax({
+            url: url,
+            // data: form.serialize(),
+            data: {pk: pk},
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    appendToHtml(data.html)
+                }
+                else {
+                    alert("All fields must have a valid value.")
+                }
+            }
+        })
+    })
+
 })
 
 

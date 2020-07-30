@@ -1,5 +1,5 @@
 {% extends 'payments/base.html' %}
-
+{% load static %}
 {% block content %}
 {% if user %}
 <div class="row">
@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+
         <div class="info-wrapper text-left">
             <div class="info">
                 <p>Tariff<span class="info-values">{{ organization.tariff }}<span class="values-units">
@@ -50,8 +51,9 @@
 
     </div>
 </div>
-
-<a href="{% url 'payment_create_url' organization.slug %}" class="btn btn-primary mt-5">New payment</a>
+<div class="new-payment-button">
+    <a href="{% url 'payment_create_url' organization.slug %}" class="btn btn-primary mt-5">New payment</a>
+</div>
 {% else %}
 <div class="data-button">
     <a href="{% url 'custom_profile_url' %}" class="btn btn-secondary">Enter personal data</a>

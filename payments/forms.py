@@ -14,9 +14,10 @@ class OrganizationCreateForm(forms.ModelForm):
               'title',
               'tariff',
               'measurement_units',
+              'icon'
           ]
           # exclude = ['']
-          
+
         #   widget = {
         #       'title': forms.TextInput(attrs={'class': 'form-control'})
         #   }

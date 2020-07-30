@@ -34,6 +34,7 @@ urlpatterns = [
     path('checkout/', Checkout.as_view(), name="checkout_url"),
     path('profile-settings/', ProfileSettings.as_view(), name="profile_settings_url"),
     path('order/<int:pk>/', OrderDetailView.as_view(), name="order_detail_url"),
+    path('icon_select/', IconSelect.as_view(), name="icon_select_url"),
 
 
 ]

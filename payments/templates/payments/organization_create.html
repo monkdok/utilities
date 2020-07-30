@@ -1,23 +1,57 @@
 {% extends 'payments/base.html' %}
+{% load static %}
 
 {% block content %}
+<div class="row service-detail-row">
+    <div class="col service-detail">
+        <div class="row">
+            <div class="col service-title text-left">
+                <span class="">Create service</span>
+            </div>
+        </div>
+        <div class="info-wrapper text-left">
+            <div class="info">
 
-<div class="form-group">
-    <form method="post">
-        {% csrf_token %}
-        <!--    <label for="title">Enter organization name: </label>-->
-        <input class="form-inline" id="title" type="text" name="title" placeholder="Organization name">
-        <input id="tariff" name="tariff" type="number" step="0.01" placeholder="tariff">
-        <select name="measurement_units" id="measurement_units">
-            <option value="кВт/ч">кВт/ч</option>
-            <option value="м3">м3</option>
-        </select>
-        <!--    {{ form.title }}-->
-        <!--    {{ form.tariff }}-->
-        <!--    {{ form.previous_counter_value }}-->
-        <!--    {{ form.measurement_units }}-->
-        <input type="submit" class="btn btn-success" value="OK">
-    </form>
+                <div class="form-group">
+
+
+                    <form method="post" id="service-create-form">
+                        {% csrf_token %}
+                        <label for="title"><span class="field-label">Service name</span></label>
+                        <input class="form-inline" id="title" type="text" name="title" placeholder="">
+                        <label for="tariff"><span class="field-label">Tariff</span></label>
+                        <input class="form-inline" id="tariff" name="tariff" type="number" step="0.01" placeholder="">
+                        <label for="measurement_units"><span class="field-label">Units</span></label><br>
+<!--                        <select name="measurement_units" id="measurement_units">-->
+<!--                            <option value="кВт/ч">кВт/ч</option>-->
+<!--                            <option value="м3">м3</option>-->
+<!--                        </select>-->
+
+                        {{ form.measurement_units }}
+                        <div class="icon-preview"></div>
+                        <input type="hidden" name="icon" id="icon-pk" value="">
+                        <div class="dropdown mt-5">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Icons
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
+                                {% for icon in icons %}
+                                <a class="dropdown-item dropdown-icon" data-icon-pk="{{ icon.pk }}",
+                                data-url="{% url 'icon_select_url' %}"><img src="{{ icon.icon.url }}" style="width: 20px; height:auto;"></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <img src="" alt="">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+        {% endcomment %}
+    </div>
+</div>
+<div class="new-payment-button">
+    <button type="submit" form="service-create-form" class="btn btn-primary mt-5">Submit</button>
 </div>
 
 {% endblock %}

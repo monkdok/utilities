@@ -21,23 +21,27 @@ class CustomUser(models.Model):
 
 
 class Icons(models.Model):
-    icon = models.ImageField(upload_to='payments/static/payments/media/img/')
+    icon = models.ImageField(upload_to='img/icons/', default=None)
 
     def __str__(self):
         return str(self.id)
-    
 
     class Meta:
         verbose_name = 'Icon'
         verbose_name_plural = 'Icons'
 
 
-
 class Organization(models.Model):
     MEASUREMENT_UNITS_CHOICES = (('кВт/ч', 'кВт/ч'), ('м3', 'м3'))
+    # ICON_CHOICES = (
+    #     ('app.png', 'app.png'),
+    #     ('archive-3.png', 'archive-3.png'),
+    #     ('smiley_happy.png', 'happy happy joy joy'),
+    # )
 
     id = models.AutoField(primary_key=True)
-    icon = models.OneToOneField(Icons, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT, related_name='organization')
+    icon = models.ForeignKey(Icons, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT, related_name='organization')
+    # icon = models.CharField(max_length=100, choices=ICON_CHOICES, default='')
     author = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     first_name = models.CharField(max_length=100, blank=True, unique=False)
     second_name = models.CharField(max_length=100, blank=True, unique=False)

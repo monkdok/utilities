@@ -4,16 +4,16 @@
 {% block content %}
 <div class="row">
 	<div class="col-12 organizations">
-		<div class="services text-left">
+		<div class="main-title text-left">
 			<span class="">Services</span>
 		</div>
-		<div class="row">
+		<div class="row services-row">
 			{% comment %} <img src="{% static 'payments/media/img/alarm.png' %}" style="height: 20px; width: auto"
 				alt=""> {% endcomment %}
 			{% for organization in organization %}
 			<div class="col-6 col-sm-4 col-md-3 col-lg-3 org-item-wrapper">
 				<a href="{% url 'organization_detail_url' organization.slug %}"
-					class="col organization-item">{{ organization.title }}</a>
+					class="col organization-item"><img src="{{ organization.icon.icon.url }}" class="icon"><br>{{ organization.title }}</a>
 			</div>
 			{% endfor %}
 		</div>
