@@ -27,6 +27,55 @@ input {
   background-color: #ffffff  !important;
   padding-left: 15px  !important;
   height: 40px  !important;
+  height: 40px  !important;
+  font-weight: 300;
+  color: #696e78;
+
+}
+
+
+input#title {
+    width: 100% !important;
+}
+
+input#tariff {
+    width: 100% !important;
+}
+
+
+.input-title {
+    display: inline-block;
+}
+
+.input-tariff {
+    display: inline-block;
+}
+
+.previous-counter-value {
+    display:inline-block;
+    margin-right: 60px;
+}
+
+.current-counter-value {
+    display:inline-block;
+}
+
+
+#previous_counter_value, #current_counter_value {
+    width: 180px;
+}
+
+.payment-create-service-title {
+    display: block;
+}
+
+#period {
+    display: block;
+    width: 200px;
+}
+
+.difference-result {
+    display: none;
 }
 
 input:focus {
@@ -43,6 +92,10 @@ input:focus {
 }
 
 
+.archive {
+    display: inline-block;
+}
+
 .archive a {
   text-decoration: none !important;
   color: #696e78 !important;
@@ -50,6 +103,8 @@ input:focus {
 
 
 .btn-primary {
+    padding-left: 55px !important;
+    padding-right: 55px !important;
   color: white !important;
   border-radius: 30px;
   border-color: #655feb;
@@ -87,14 +142,54 @@ input:focus {
   overflow-wrap: break-word;
 }
 
+#difference {
+    display: inline;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-size: 2.1rem;
+}
+
+.units, .currency {
+    display: none;
+    margin-bottom: 6px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #696e78;
+}
+
+.tariff-currency {
+    margin-bottom: 6px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #696e78;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    margin-left: 50px;
+}
+
+#dropdownMenuButton {
+    height: 45px !important;
+    width: 85px !important;
+}
+
+
+.dropdown-menu-block {
+    display: inline;
+}
 
 .dropdown-menu-icon {
     min-width: 10px !important;
 }
 
+
 .icon-preview {
-    margin-top: 15px;
+    margin-left: 15px;
 }
+
 
 .main-title {
   font-family: "Raleway", sans-serif;
@@ -105,12 +200,13 @@ input:focus {
 }
 
 .service-detail {
-    max-width: 580px;
+    max-width: 550px;
 }
 
 .service-detail-row {
     justify-content: center;
 }
+
 
 .service-title {
   position: relative;
@@ -132,7 +228,34 @@ input:focus {
   justify-content: start;
 }
 
+
+.options {
+    display: inline-block;
+    margin-top: 2px;
+}
+
+.difference-wrapper, .result-wrapper {
+    margin-top: 60px;
+    min-width: 50px;
+    display: block;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 34px;
+    color: #696e78;
+}
+
+.result-wrapper {
+    margin-left: 60px;
+}
+
+.units-wrapper {
+    display: inline-block;
+}
+
+
+
 .dotted-menu {
+    font-size: 30px;
   border: 0 none;
   background: none;
   overflow: visible;
@@ -151,10 +274,18 @@ input:focus {
 }
 
 .info-wrapper {
-    max-width: 580px;
-    font-family: "Raleway", sans-serif;
+    max-width: 100%;
+    padding: 15px 0 25px 35px;
+    /*font-family: "Raleway", sans-serif;
     font-weight: 400;
-    font-size: 1.4rem;
+    font-size: 1.4rem;*/
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-size: 2.1rem;
+    color: #696e78 !important;
+    /*margin: 12px 0 49px 49px;*/
+
+
 /*
     height: 100%;
 */
@@ -169,18 +300,18 @@ input:focus {
     box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
 }
 
-#service-create-form input {
+.fields-wrapper {
+}
+
+#service-create-form input, #measurement_units {
     margin-bottom: 35px;
 }
 
 
 svg {
-  margin-bottom: 2px;
+    margin-top: 7px;
 }
 
-.info {
-  margin: 50px;
-}
 
 /*.new-payment-button {
     position: relative;
@@ -193,6 +324,11 @@ svg {
   font-size: 1.6rem;
   color: #696e78;
   float: right;
+}
+
+.payment-create-tariff {
+    display: inline-block;
+    margin-left: 60px;
 }
 
 .values-units {
@@ -214,6 +350,11 @@ org-item-apper {
   padding-right: 10px !important;
 }
 
+.dropdownMenu2 {
+    text-align: bottom;
+}
+
+
 .icon {
     height: 40px;
     width: auto;
@@ -228,10 +369,6 @@ org-item-apper {
     transform: scale(1.02);
 }
 
-
-/*.services-row {
-    justify-content:center;
-}*/
 
 .organization-item {
   font-family: "Raleway", sans-serif;

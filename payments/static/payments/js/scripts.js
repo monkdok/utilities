@@ -9,7 +9,7 @@ $(document).ready(function () {
     }
 
     function appendToHtml(data) {
-        $('.icon-preview').html(data)
+        $('.icon-on-button').html(data)
     }
 
 
@@ -93,7 +93,8 @@ $(document).ready(function () {
     }
     $('#total-price').text(calculation())
 
-    //Getting Icon ID
+
+//Getting Icon ID
     $('.dropdown-icon').on('click', function() {
         let pk = $(this).attr('data-icon-pk')
         $('#icon-pk').val(pk)
@@ -108,13 +109,47 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data) {
-                    appendToHtml(data.html)
+                    $('.icon-on-button').html(data.html)
                 }
                 else {
                     alert("All fields must have a valid value.")
                 }
             }
         })
+    })
+
+
+//Getting Units
+    $('.dropdown-unit').on('click', function() {
+        let unit = $(this).text()
+        $('.unit-on-button').text(unit)
+        $('#measurement_units').val(unit)
+    })
+
+
+    $(document).on('input', '#current_counter_value, #previous_counter_value', function() {
+        let currentValue = parseInt($('#current_counter_value').val())
+        let previousValue = parseInt($('#previous_counter_value').val())
+        let tariff = $('#tariff').val()
+        let difference = $('#difference')
+        let calculationResult = $('#result')
+
+        if (isNaN(previousValue)) {
+            previousValue = 0
+        }
+        let differenceCalc = currentValue - previousValue
+        let price = differenceCalc * tariff
+        if (currentValue > previousValue) {
+            difference.text(differenceCalc)
+            calculationResult.text(price.toFixed(2))
+            $('.difference-result').css('display', 'flex')
+            $('.units, .currency').show()
+        } else {
+            calculationResult.text('')
+            difference.text('')
+            $('.difference-result').css('display', 'none')
+            $('.units, .currency').hide()
+        }
     })
 
 })

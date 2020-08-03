@@ -1,12 +1,140 @@
+{% extends 'payments/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row service-detail-row">
+    <div class="col service-detail">
+        <div class="row">
+            <div class="col service-title text-left">
+                <span class="">New payment</span>
+            </div>
+            <!--Options-->
+            <div id="options" class="options">
+                <!--Archive icon-->
+                <div class="archive"><a href="{% url 'payment_archive_url' organization.slug %}">
+                    <img src="{% static 'payments/media/img/icons/archive-1.png' %}" style="height: 25px; width: auto;">
+                </a>
+                </div>
+
+                <!--Dropdown dotted menu-->
+                <div class="dropdown dotted-menu text-right">
+                    <button class="dotted-menu" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <svg width="1em" height="0.9em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <a href="{% url 'organization_update_url' organization.slug %}">
+                            <button class="dropdown-item" type="button">Edit</button>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'organization_delete_url' organization.slug %}">
+                            <button class="dropdown-item" type="button">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-wrapper text-left">
+
+            <div class="form-group">
+                <form method="post" id="payment-create-form">{% csrf_token %}
+                    <div class="col fields-wrapper">
+                        <div class="row">
+
+                            <!--Service name-->
+                            <div class="col-lg-md-4 payment-create-service-title">
+                                <span class="field-label">Service name</span><br>
+                                <span id="service-title">{{ organization.title }}</span>
+                            </div>
+
+                            <!--Tariff-->
+                            <div class="col-lg-md-4 payment-create-tariff">
+                                <span class="field-label">Tariff</span><br>
+                                <span id="service-tariff">{{ organization.tariff }}</span><span class="tariff-currency">&nbsp;hrn</span>
+                            </div>
+                        </div>
+                        <!--Previous counter value-->
+                        <div class="row">
+                            <div class="col-lg-md-4 previous-counter-value mt-5">
+                                <label for="previous_counter_value"><span class="field-label">Previous counter value</span></label>
+                                <input class="form-inline" required="" id="previous_counter_value" type="number" name="previous_counter_value" placeholder="" value="{{ last_payment.current_counter_value }}">
+                            </div>
+
+                            <!--Current counter value-->
+                            <div class="col-lg-md-4 current-counter-value mt-5">
+                                <label for="current_counter_value"><span class="field-label">Current counter value</span></label>
+                                <input class="form-inline" id="current_counter_value" required="" type="number" name="current_counter_value" placeholder="">
+                            </div>
+
+                        </div>
+
+                        <input id="tariff" type="hidden" value="{{ organization.tariff }}">
+                        <div class="row difference-result">
+
+                            <!--Difference-->
+                            <div class="col-lg-md-4 difference-wrapper">
+                                <span class="field-label">Difference</span><br>
+                                <span id="difference"></span><span class="units" >&nbsp;{{ organization.measurement_units }}</span>
+                            </div>
+
+                            <!--Price-->
+                            <div class="col-lg-md-4 result-wrapper">
+                                <span class="field-label">Price</span><br>
+                                <span id="result"></span><span class="currency" >&nbsp;hrn</span>
+                            </div>
+                        </div>
+
+                        <!--Payment period-->
+                        <div class="row mt-5">
+                            <div class="col-lg-md-4">
+                                <label for="period"><span class="field-label">Payment period</span></label>
+                                <input type="text" id="period" name="payment_period" value="{{ payment_period|date:'m, Y' }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+    {% endcomment %}
+</div>
+<div class="new-payment-button">
+    <button type="submit" form="payment-create-form" class="btn btn-primary mt-5">Submit</button>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h3>{{ organization.title }}</h3>
 New payment:
 <br>
 
-<form method="post">
-    {% csrf_token %}
-    <input type="number" name="previous_counter_value" placeholder="previous" value="{{ last_payment.current_counter_value }}">
-    <input type="number" name="current_counter_value" placeholder="current">
-    <input type="text" name="payment_period" value="{{ payment_period|date:'m, Y' }}">
 
-    <input type="submit" value="OK">
-</form>

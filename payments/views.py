@@ -54,8 +54,7 @@ class OrganizationCreate(LoginRequiredMixin, View):
             form.author = self.request.user
             form.save()
             return redirect('organization_list_url')
-        else:
-            print('not valid')
+        return HttpResponseRedirect(self.request.path_info)
 
 
 class OrganizationList(LoginRequiredMixin, View):
@@ -66,7 +65,7 @@ class OrganizationList(LoginRequiredMixin, View):
             user = CustomUser.objects.get(user=self.request.user)
         else:
             user = None
-        organization = Organization.objects.all()
+        organization = Organization.objects.filter(author=self.request.user)
         context = {
             'organization': organization,
             'user': user,
@@ -83,10 +82,10 @@ class OrganizationDetail(LoginRequiredMixin, View):
             user = CustomUser.objects.get(user=self.request.user)
         else:
             user = None
-        organization = Organization.objects.get(slug=slug)
-        payments = Payment.objects.filter(organization=organization)
+        organization = Organization.objects.get(author=self.request.user, slug=slug)
+        payments = Payment.objects.filter(author=self.request.user, organization=organization)
         if len(payments) > 0:
-            last_payment = Payment.objects.latest('id')
+            last_payment = payments.latest('id')
         else:
             last_payment = None
         context = {

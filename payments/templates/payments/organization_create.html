@@ -17,31 +17,64 @@
 
                     <form method="post" id="service-create-form">
                         {% csrf_token %}
-                        <label for="title"><span class="field-label">Service name</span></label>
-                        <input class="form-inline" id="title" type="text" name="title" placeholder="">
-                        <label for="tariff"><span class="field-label">Tariff</span></label>
-                        <input class="form-inline" id="tariff" name="tariff" type="number" step="0.01" placeholder="">
-                        <label for="measurement_units"><span class="field-label">Units</span></label><br>
-<!--                        <select name="measurement_units" id="measurement_units">-->
-<!--                            <option value="кВт/ч">кВт/ч</option>-->
-<!--                            <option value="м3">м3</option>-->
-<!--                        </select>-->
 
-                        {{ form.measurement_units }}
-                        <div class="icon-preview"></div>
-                        <input type="hidden" name="icon" id="icon-pk" value="">
-                        <div class="dropdown mt-5">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Icons
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
-                                {% for icon in icons %}
-                                <a class="dropdown-item dropdown-icon" data-icon-pk="{{ icon.pk }}",
-                                data-url="{% url 'icon_select_url' %}"><img src="{{ icon.icon.url }}" style="width: 20px; height:auto;"></a>
-                                {% endfor %}
+                        <div class="fields-wrapper">
+                            <div class="row">
+
+                                <div class="col-7 input-title">
+<!--                                    {{ form.title.label_tag }}-->
+<!--                                    {{ form.email.errors }}-->
+<!--                                    {{ form.title }}-->
+                                    <label for="title"><span class="field-label">Service name</span></label>
+                                    <input class="form-inline" required="" id="title" type="text" name="title" placeholder="">
+                                </div>
+
+                                <div class="col-4 input-tariff">
+                                    <label for="tariff"><span class="field-label">Tariff</span></label>
+                                    <input class="form-inline" required="" id="tariff" name="tariff" type="number" step="0.01" placeholder="">
+                                </div>
                             </div>
                         </div>
-                        <img src="" alt="">
+
+
+                        <!--Units-->
+                        <div class="units-wrapper">
+                            <label for="measurement_units"><span class="field-label">Units</span></label><br>
+                            <input type="hidden" name="measurement_units" required="" id="measurement_units" value="">
+                            <div class="units-choose">
+                                <div class="dropdown dropdown-menu-block mt-5">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false"><span class="unit-on-button">----</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
+                                        {% for item in form.measurement_units %}
+                                        <a class="dropdown-item dropdown-unit" data-icon-pk="{{ icon.pk }}",
+                                           data-url="{% url 'icon_select_url' %}">{{ item }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Icon-->
+                        <div class="icon-wrapper">
+                            <label for="icon-pk"><span class="field-label">Icon</span></label><br>
+                            <input type="hidden" name="icon" id="icon-pk" value="">
+                            <div class="icon-choose">
+                                <div class="dropdown dropdown-menu-block mt-5">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false"><span class="icon-on-button">----</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
+                                        {% for icon in icons %}
+                                        <a class="dropdown-item dropdown-icon" data-icon-pk="{{ icon.pk }}",
+                                           data-url="{% url 'icon_select_url' %}"><img src="{{ icon.icon.url }}" style="width: 20px; height:auto;"></a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="icon-preview"></div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -53,5 +86,4 @@
 <div class="new-payment-button">
     <button type="submit" form="service-create-form" class="btn btn-primary mt-5">Submit</button>
 </div>
-
 {% endblock %}
