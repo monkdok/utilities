@@ -1,7 +1,7 @@
 {% extends 'payments/base.html' %}
 
 {% block content %}
-<h3><span id="organization-name">{{ payment.organization }}</span></h3>
+<h3><span id="organization-name"><a href="{% url 'organization_detail_url' payment.organization.slug %}">{{ payment.organization }}</a></span></h3>
     <p id="payment-period">Period: {{ payment.payment_period }}</p>
     <p id="date">Date: <span>{{ payment.date }}</span></p>
     <p id="tariff">Tariff: {{ payment.organization.tariff }} hrn.</p>

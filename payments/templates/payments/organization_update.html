@@ -3,29 +3,84 @@
 
 {% block content %}
 
-<div class="form-group">
-
-
-    <form method="post" id="service-create-form">
-        {% csrf_token %}
-        {{ form.title }}
-        {{ form.tariff }}
-        {{ form.measurement_units }}
-        <div class="icon-preview"></div>
-        <input type="hidden" name="icon" id="icon-pk" value="">
-        <div class="dropdown mt-5">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Icons
-            </button>
-            <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
-                {% for icon in icons %}
-                <a class="dropdown-item dropdown-icon" data-icon-pk="{{ icon.pk }}",
-                   data-url="{% url 'icon_select_url' %}"><img src="{{ icon.icon.url }}" style="width: 20px; height:auto;"></a>
-                {% endfor %}
+<div class="row service-detail-row">
+    <div class="col service-detail">
+        <div class="row">
+            <div class="col service-title text-left">
+                <span class="">Edit service info</span>
             </div>
         </div>
-        <img src="" alt="">
-    </form>
+        <div class="info-wrapper text-left">
+            <div class="info">
+                <div class="form-group">
+                    <!--{% url 'organization_update_url' service.slug %}-->
+                    <form method="post" action="{% url 'organization_update_url' service.slug %}" id="service-create-form">
+                        {% csrf_token %}
+
+                        <div class="fields-wrapper">
+                            <div class="row">
+
+                                <div class="col-lg-md-4 input-title">
+<!--                                    {{ form.title.label_tag }}-->
+<!--                                    {{ form.email.errors }}-->
+<!--                                    {{ form.title }}-->
+                                    <label for="id_title"><span class="field-label">Service name</span></label>
+                                    <input type="text" id="id_title" value="{{ service.title }}" name="title" maxlength="100" required="">
+                                </div>
+
+                                <div class="col-lg-md-4 input-tariff">
+                                    <label for="id_tariff"><span class="field-label">Tariff</span></label>
+                                    <input type="number" name="tariff" step="0.01" required="" id="id_tariff" value="{{ service.tariff }}">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--Units-->
+                        <div class="units-wrapper">
+                            <label for="measurement_units"><span class="field-label">Units</span></label><br>
+                            <input type="hidden" name="measurement_units" required="" id="measurement_units" value="{{ service.measurement_units }}">
+                            <div class="units-choose">
+                                <div class="dropdown dropdown-menu-block mt-5">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false"><span class="unit-on-button">{{ service.measurement_units }}</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
+                                        {% for item in form.measurement_units %}
+                                        <a class="dropdown-item dropdown-unit" data-icon-pk="{{ icon.pk }}",
+                                           data-url="{% url 'icon_select_url' %}">{{ item }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Icon-->
+                        <div class="icon-wrapper">
+                            <label for="icon-pk"><span class="field-label">Icon</span></label><br>
+                            <input type="hidden" name="icon" id="icon-pk" value="{{ service.icon.pk }}">
+                            <div class="icon-choose">
+                                <div class="dropdown dropdown-menu-block mt-5">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false"><span class="icon-on-button" style="display:static;"><img src="{{ service.icon.icon.url }}" style="width: 30px; height: auto;"></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-icon" aria-labelledby="dropdownMenuButton">
+                                        {% for icon in icons %}
+                                        <a class="dropdown-item dropdown-icon" data-icon-pk="{{ icon.pk }}",
+                                           data-url="{% url 'icon_select_url' %}"><img src="{{ icon.icon.url }}" style="width: 20px; height:auto;"></a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="icon-preview"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+        {% endcomment %}
+    </div>
 </div>
 <div class="new-payment-button">
     <button type="submit" form="service-create-form" class="btn btn-primary mt-5">Submit</button>

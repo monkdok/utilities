@@ -99,21 +99,46 @@ class OrganizationDetail(LoginRequiredMixin, View):
         return render(request, 'payments/organization_detail.html', context)
 
 
-class OrganizationUpdate(LoginRequiredMixin, UpdateView):
+# class OrganizationUpdate(LoginRequiredMixin, UpdateView):
+#     login_url = 'account_login'
+#     model = Organization
+#     template_name = 'payments/organization_update.html'
+#     form_class = OrganizationCreateForm
+#
+#     def get_success_url(self):
+#         return reverse('organization_detail_url', kwargs={'slug': self.object.slug})
+#         # return reverse('organization_detail_url', kwargs={'slug': self.object.slug})
+#
+#     def get_context_data(self, **kwargs):
+#         # Call the base implementation first to get a context
+#         context = super().get_context_data(**kwargs)
+#         # Add in a QuerySet of all the books
+#         context['icons'] = Icons.objects.all()
+#         return context
+
+class OrganizationUpdate(LoginRequiredMixin, View):
     login_url = 'account_login'
-    model = Organization
-    template_name = 'payments/organization_update.html'
-    form_class = OrganizationCreateForm
 
-    def get_success_url(self):
-        return reverse('organization_list_url')
+    def get(self, request, slug):
+        form = OrganizationCreateForm()
+        icons = Icons.objects.all()
+        service = Organization.objects.get(author=self.request.user, slug=slug)
+        # user = CustomUser.objects.get(user=self.request.user)
+        context = {
+            'form': form,
+            'icons': icons,
+            'service': service,
+        }
+        return render(request, 'payments/organization_update.html', context)
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['icons'] = Icons.objects.all()
-        return context
+    def post(self, request, slug):
+        service = Organization.objects.get(author=self.request.user, slug=slug)
+        form = OrganizationCreateForm(request.POST or None, instance=service)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('organization_detail_url', kwargs={'slug': form.instance.slug}))
+            # return HttpResponseRedirect(self.request.path_info)
+        return HttpResponseRedirect(reverse('organization_update_url', kwargs={'slug': form.instance.slug}))
 
 
 class OrganizationDelete(LoginRequiredMixin, DeleteView):
@@ -238,7 +263,6 @@ class CartAdding(View):
             'payment': new_payment,
             'payments': payments_in_cart,
         }
-        print('payment:', payment)
         data['payment'] = render_to_string('payments/snippets/append_to_cart.html', context, request)
         data['count'] = total_payments
         return JsonResponse(data)
@@ -254,7 +278,6 @@ class CartItemDelete(View):
         payment_in_cart_to_delete = PaymentInCart.objects.get(pk=pk)
         payment_in_cart_to_delete.delete()
         total_payments = PaymentInCart.objects.filter(session_key=session_key, is_ordered=False).count()
-        print('total_payments:', total_payments)
         data['deleted'] = True
         data['count'] = total_payments
         return JsonResponse(data)
@@ -284,7 +307,6 @@ class Checkout(LoginRequiredMixin, View):
                 payment.order = order
                 payment.is_ordered = True
                 payment.save()
-                print(payment.payment.organization.title, payment.order)
         order.total_price = total_price
         order.save()
         return redirect('organization_list_url')
@@ -318,8 +340,6 @@ class IconSelect(View):
         data = {}
         pk = request.GET['pk']
         icon = Icons.objects.get(pk=pk)
-        print('icon', icon)
         context = {'icon': icon}
         data['html'] = render_to_string('payments/snippets/icon_preview.html', context, request)
-        print(data['html'])
         return JsonResponse(data)

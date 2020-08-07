@@ -97,8 +97,9 @@ $(document).ready(function () {
 //Getting Icon ID
     $('.dropdown-icon').on('click', function() {
         let pk = $(this).attr('data-icon-pk')
-        $('#icon-pk').val(pk)
-
+        let input = $('input#icon-pk')
+        input.val(pk)
+        console.log('input: ' + input.val())
         let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val()
         let url = $(this).attr('data-url')
         $.ajax({
@@ -119,14 +120,21 @@ $(document).ready(function () {
     })
 
 
+////Update Service
+//    let unitsOnButton = $('.unit-on-button').text()
+//    let iconOnButton = $('.icon-on-button img').data('src')
+//    $('#measurement_units').val(unitsOnButton)
+//    $('#icon').val(iconOnButton)
+
 //Getting Units
     $('.dropdown-unit').on('click', function() {
         let unit = $(this).text()
         $('.unit-on-button').text(unit)
         $('#measurement_units').val(unit)
+
     })
 
-
+//Calculator
     $(document).on('input', '#current_counter_value, #previous_counter_value', function() {
         let currentValue = parseInt($('#current_counter_value').val())
         let previousValue = parseInt($('#previous_counter_value').val())

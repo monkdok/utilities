@@ -42,14 +42,14 @@ class Organization(models.Model):
     id = models.AutoField(primary_key=True)
     icon = models.ForeignKey(Icons, blank=True, null=True, default=None, on_delete=models.SET_DEFAULT, related_name='organization')
     # icon = models.CharField(max_length=100, choices=ICON_CHOICES, default='')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default='')
     first_name = models.CharField(max_length=100, blank=True, unique=False)
     second_name = models.CharField(max_length=100, blank=True, unique=False)
     date = models.DateField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=False, unique=False)
     description = models.CharField(max_length=100, blank=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    tariff = models.DecimalField(max_digits=4, decimal_places=2, blank=False)
+    tariff = models.DecimalField(max_digits=7, decimal_places=2, blank=False)
     measurement_units = models.CharField(max_length=10, choices=MEASUREMENT_UNITS_CHOICES, default='')
 
     def save(self, *args, **kwargs):

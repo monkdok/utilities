@@ -1,16 +1,27 @@
 {% extends 'payments/base.html' %}
 
+{% block page-title %}<h3>{{ organization }}</h3>{% endblock %}
 {% block content %}
-<h3>{{ organization }}</h3>
+{% if payments %}
 {% for payment in payments %}
-<div class="counter-values">
-    <a href="{% url 'payment_detail_url' payment.id %}">
-    <button class="btn btn-primary">
-        {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)
-    </button>
-</a>
+<div class="card text-left" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ organization }}</h5>
+        <p class="card-text">{{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)</p>
+        <div class="add-button text-right">
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
 </div>
 
 <br>
 {% endfor %}
+{% else %}
+<p style=" font-weight: 400;
+  font-size: 30px;
+  color: #696e78;">You have no payments yet</p>
+{% endif %}
+<div class="new-payment-button text-center">
+    <a href="{% url 'payment_create_url' organization.slug %}" class="btn btn-primary mt-5">New payment</a>
+</div>
 {% endblock %}

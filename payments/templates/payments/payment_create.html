@@ -1,6 +1,8 @@
 {% extends 'payments/base.html' %}
 {% load static %}
 
+{% block title %} New Payment {% endblock %}
+
 {% block content %}
 <div class="row service-detail-row">
     <div class="col service-detail">
@@ -38,8 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="info-wrapper text-left">
-
+        <div class="col info-wrapper text-left">
             <div class="form-group">
                 <form method="post" id="payment-create-form">{% csrf_token %}
                     <div class="col fields-wrapper">

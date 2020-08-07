@@ -34,21 +34,24 @@ input {
 }
 
 
-input#title {
-    width: 100% !important;
+input#id_title {
+    width: 180px; !important;
 }
 
-input#tariff {
-    width: 100% !important;
+input#id_tariff {
+    width: 180px; !important;
 }
 
 
 .input-title {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    margin-right: 60px;
 }
 
 .input-tariff {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
 }
 
 .previous-counter-value {
@@ -92,9 +95,36 @@ input:focus {
 }
 
 
+.main-detail-wrapper {
+    width: 100%;
+    margin-right: 20px;
+}
+
+.back-button {
+    display: inline-block;
+    vertical-align: 155px;
+}
+
+.back-button a {
+    color: #655feb !important;
+    margin-top: 12px;
+}
+
+.organization-list-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.add-organization-bnt {
+    margin-bottom: 80px;
+}
+
 .archive {
     display: inline-block;
 }
+
 
 .archive a {
   text-decoration: none !important;
@@ -201,6 +231,7 @@ input:focus {
 
 .service-detail {
     max-width: 550px;
+    display: inline-block;
 }
 
 .service-detail-row {
@@ -253,9 +284,20 @@ input:focus {
 }
 
 
+.details-item {
+    margin-right: 200px;
+    display: inline-block;
+    justify-content: flex-start;
+}
+
+.service-detail-item {
+    float: right;
+    margin-right: 35px;
+    color: #655feb;
+}
 
 .dotted-menu {
-    font-size: 30px;
+  font-size: 30px;
   border: 0 none;
   background: none;
   overflow: visible;
@@ -275,7 +317,7 @@ input:focus {
 
 .info-wrapper {
     max-width: 100%;
-    padding: 15px 0 25px 35px;
+    padding: 17px 2px 19px 54px;
     /*font-family: "Raleway", sans-serif;
     font-weight: 400;
     font-size: 1.4rem;*/
@@ -300,6 +342,8 @@ input:focus {
     box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
 }
 
+
+
 .fields-wrapper {
 }
 
@@ -319,12 +363,12 @@ svg {
 }*/
 
 .info-values {
-  font-family: "Rubik", sans-serif;
-  font-weight: 400;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
   font-size: 1.6rem;
   color: #696e78;
-  float: right;
 }
+
 
 .payment-create-tariff {
     display: inline-block;

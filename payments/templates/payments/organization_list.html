@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="row">
+<div class="row organization-list-row">
 	<div class="col-12 organizations">
 		<div class="main-title text-left">
 			<span class="">Services</span>
@@ -18,9 +18,9 @@
 			{% endfor %}
 		</div>
 	</div>
-</div>
-<div class="add-organization">
-	<a href="{% url 'organization_create_url' %}" class="btn btn-primary mt-5">Add Organization</a>
+	<div class="add-organization-bnt">
+		<a href="{% url 'organization_create_url' %}" class="btn btn-primary mt-5">Add Organization</a>
+	</div>
 </div>
 {% comment %} <div class="username">
 	{{ user.last_name }}

@@ -2,7 +2,9 @@
 {% load static %}
 {% block content %}
 {% if user %}
-
+<!--<div class="back-button">
+    <a href="{{request.META.HTTP_REFERER}}"><i class="fas fa-chevron-left fa-2x"></i></a>
+</div>-->
 <div class="row service-detail-row">
     <div class="col service-detail">
         <div class="row">
@@ -17,7 +19,7 @@
                 <!--Archive icon-->
                 <div class="archive"><a href="{% url 'payment_archive_url' organization.slug %}">
                     <img src="{% static 'payments/media/img/icons/archive-1.png' %}" style="height: 25px; width: auto;">
-                    </a>
+                </a>
                 </div>
 
                 <!--Dropdown dotted menu-->
@@ -31,7 +33,7 @@
                         </svg>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <a href="{% url 'organization_update_url' organization.slug %}">
+                        <a href="{% url 'organization_update_url' slug=organization.slug %}">
                             <button class="dropdown-item" type="button">Edit</button>
                         </a>
                         <div class="dropdown-divider"></div>
@@ -42,23 +44,43 @@
                 </div>
             </div>
         </div>
-        <div class="info-wrapper text-left">
-            <div class="info">
+        <div class="col info-wrapper text-left">
 
-                <!--Tariff-->
-                 <p>Tariff<span class="info-values">{{ organization.tariff }}<span class="values-units">
-                                hrn</span></span></p>
-                {% comment %} <p>Units<span class="info-values">{{ organization.measurement_units }}</span></p>
-                {% endcomment %}
-
-                <!--Counter values-->
-                {% if last_payment.current_counter_value %}
-                <p>Counter<span class="info-values">{{ last_payment.current_counter_value }}<span
-                        class="values-units"> {{ organization.measurement_units }}</span></span>
-                </p>
-                {% endif %}
+            <!--Tariff-->
+            <div class="row">
+                <div class="col info-values">
+                    <span class="details-item">
+                        Tariff
+                    </span>
+                    <span class="service-detail-item">{{ organization.tariff }}<span class="values-units">
+                                hrn</span></span>
+                </div>
             </div>
+
+            <!--Units-->
+            <div class="row">
+                <div class="col info-values">
+                    <span class="details-item">
+                        Units
+                    </span>
+                    <span class="service-detail-item">{{ organization.measurement_units }}</span>
+                </div>
+            </div>
+
+            <!--Counter values-->
+            {% if last_payment.current_counter_value %}
+            <div class="row">
+                <div class="col info-values">
+                    <span class="details-item">
+                        Counter
+                    </span>
+                    <span class="service-detail-item">{{ last_payment.current_counter_value }}<span class="values-units">
+                                 {{ organization.measurement_units }}</span></span>
+                </div>
+            </div>
+            {% endif %}
         </div>
+
         {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
         {% endcomment %}
     </div>
