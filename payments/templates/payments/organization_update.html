@@ -10,9 +10,9 @@
                 <span class="">Edit service info</span>
             </div>
         </div>
-        <div class="info-wrapper text-left">
-            <div class="info">
-                <div class="form-group">
+        <div class="row">
+            <div class="col info-wrapper text-left">
+                <div class="col form-group">
                     <!--{% url 'organization_update_url' service.slug %}-->
                     <form method="post" action="{% url 'organization_update_url' service.slug %}" id="service-create-form">
                         {% csrf_token %}
@@ -21,9 +21,9 @@
                             <div class="row">
 
                                 <div class="col-lg-md-4 input-title">
-<!--                                    {{ form.title.label_tag }}-->
-<!--                                    {{ form.email.errors }}-->
-<!--                                    {{ form.title }}-->
+                                    <!--                                    {{ form.title.label_tag }}-->
+                                    <!--                                    {{ form.email.errors }}-->
+                                    <!--                                    {{ form.title }}-->
                                     <label for="id_title"><span class="field-label">Service name</span></label>
                                     <input type="text" id="id_title" value="{{ service.title }}" name="title" maxlength="100" required="">
                                 </div>
@@ -78,9 +78,9 @@
                 </div>
             </div>
         </div>
-        {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
-        {% endcomment %}
     </div>
+    {% comment %} <p>Name: {{ user.last_name }} {{ user.first_name }}. {{ user.surname }}</p>
+    {% endcomment %}
 </div>
 <div class="new-payment-button">
     <button type="submit" form="service-create-form" class="btn btn-primary mt-5">Submit</button>

@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar sticky-bottom navbar-toggleable-xs navbar-expand-sm navbar-light bg-light ">
+<nav class="navbar sticky-bottom navbar-toggleable-xs navbar-expand-sm navbar-light bg-light">
   {% url 'organization_list_url' as organization_list_url %}
   {% if  request.path == organization_list_url %}
   <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><img
@@ -51,16 +51,22 @@
   <ul id="cart-snippet">
     {% for payment in payments_in_cart %}
     <li>
-      <h4>{{ payment.payment.organization.title }}</h4>
+      <div class="cart-items__title">
+        <h4>{{ payment.payment.organization.title }}</h4> <a href="{% url 'cart_delete_url' %}" class="delete-item" data-payments-in-cart-pk="{{ payment.pk }}"><svg width="1.5em"
+                                                                                                                                                                     height="auto"
+                                                                                                                                                                     viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+      </svg>
+      </a>
+      </div>
       values: {{ payment.payment.previous_counter_value }} - {{ payment.payment.current_counter_value }}<br>
       difference: {{ payment.payment.difference }} {{ payment.payment.organization.measurement_units }}<br>
-      price: {{ payment.price_per_payment }} UAH <a href="{% url 'cart_delete_url' %}" class="delete-item"
-        data-payments-in-cart-pk="{{ payment.pk }}">X
-      </a><br><br>
+      price: {{ payment.price_per_payment }} uah <br><br>
     </li>
     {% endfor %}
   </ul>
-  <div class="text-right">
-    <a href="{% url 'checkout_url' %}"><button class="btn btn-success">Checkout</button></a>
+  <div class="checkout-button">
+    <a href="{% url 'checkout_url' %}"><button class="btn btn-primary checkout-btn">Checkout</button></a>
   </div>
 </div>

@@ -1,14 +1,20 @@
 {% extends 'payments/base.html' %}
+{% load static %}
 
 {% block content %}
+<!--
 <h3><span id="organization-name"><a href="{% url 'organization_detail_url' payment.organization.slug %}">{{ payment.organization }}</a></span></h3>
-    <p id="payment-period">Period: {{ payment.payment_period }}</p>
-    <p id="date">Date: <span>{{ payment.date }}</span></p>
-    <p id="tariff">Tariff: {{ payment.organization.tariff }} hrn.</p>
-    <p id="counter-values">counter values: {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)</p>
-    <p id="difference">Difference: {{ payment.difference }} {{ payment.organization.measurement_units }}.</p>
-    <p id="price">Price: {{ payment.price }} hrn.</p>
+<p id="payment-period">Period: {{ payment.payment_period }}</p>
+<p id="date">Date: <span>{{ payment.date }}</span></p>
+<p id="tariff">Tariff: {{ payment.organization.tariff }} hrn.</p>
+<p id="counter-values">counter values: {{ payment.previous_counter_value }} - {{ payment.current_counter_value }} ({{ payment.organization.measurement_units }}.)</p>
+<p id="difference">Difference: {{ payment.difference }} {{ payment.organization.measurement_units }}.</p>
+<p id="price">Price: {{ payment.price }} hrn.</p>
 <a href="{% url 'payment_delete_url' payment.pk %}"><button class="btn btn-danger">Delete</button></a>
+
+-->
+
+
 <!--<a href="" class="btn btn-primary" id="btn-add-to-cart"
    data-organization="{{ payment.organization }}"
    data-payment-period="{{ payment.payment_period }}"
@@ -22,6 +28,126 @@
    data-url="{% url 'cart_adding_url' payment.pk %}"
    data-pk="{{ payment.pk }}"
    data-csrf="{% csrf_token %}">Add to Cart</a>-->
+
+
+<!--<div class="back-button">
+    <a href="{{request.META.HTTP_REFERER}}"><i class="fas fa-chevron-left fa-2x"></i></a>
+</div>-->
+
+
+<div class="row service-detail-row">
+    <div class="col service-detail">
+        <div class="row align-items-center">
+
+            <!--Title-->
+            <div class="col service-title d-flex align-items-end text-left">
+                <h3>{{ payment.organization.title }}</h3>
+            </div>
+
+            <!--Options-->
+            <div id="options" class="options">
+                <!--Archive icon-->
+                <div class="archive"><a href="{% url 'payment_archive_url' payment.organization.slug %}">
+                    <img src="{% static 'payments/media/img/icons/archive-1.png' %}" style="height: 25px; width: auto;">
+                </a>
+                </div>
+
+                <!--Dropdown dotted menu-->
+                <div class="dropdown dotted-menu text-right">
+                    <button class="dotted-menu  d-flex align-items-start" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <svg width="1em" height="0.9em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <a href="">
+                            <button class="dropdown-item" type="button">Edit</button>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'payment_delete_url' payment.pk %}">
+                            <button class="dropdown-item" type="button">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-body">
+
+            <div class="col info-wrapper text-left">
+
+                <!--Tariff-->
+                <div class="row">
+                    <div class="col info-values">
+                        <div class="details-item">
+                            Tariff
+                        </div>
+                        <div class="service-detail-item">{{ payment.organization.tariff }}<span class="measurement_units"> hrn</span></div>
+                    </div>
+                </div>
+
+                <!--Period-->
+                <!--<div class="row">
+                    <div class="col info-values">
+                    <span class="details-item">
+                        Period
+                    </span>
+                        <span class="service-detail-item">{{ payment.payment_period }}</span>
+                    </div>
+                </div>-->
+
+                <!--Date-->
+                <div class="row">
+                    <div class="col info-values">
+                    <span class="details-item">
+                        Date
+                    </span>
+                        <span class="service-detail-item">{{ payment.date|date:"d. m. Y" }}</span>
+                    </div>
+                </div>
+
+                <!--Counter values-->
+                <div class="row">
+                    <div class="col info-values">
+                    <span class="details-item">
+                        Counter values
+                    </span>
+                        <span class="service-detail-item">{{ payment.previous_counter_value }} - {{ payment.current_counter_value }}<span class="measurement_units"> {{ payment.organization.measurement_units }}</span></span>
+                    </div>
+                </div>
+
+                <!--Difference-->
+                <div class="row">
+                    <div class="col info-values">
+                    <span class="details-item">
+                        Difference
+                    </span>
+                        <span class="service-detail-item">{{ payment.difference }}<span class="measurement_units"> {{ payment.organization.measurement_units }}</span></span>
+                    </div>
+                </div>
+
+                <!--Price-->
+                <div class="row">
+                    <div class="col info-values">
+                    <span class="details-item">
+                        Price
+                    </span>
+                        <span class="service-detail-item">{{ payment.price }}<span class="measurement_units"> hrn</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="new-payment-button">
+    <a href="{% url 'payment_create_url' payment.organization.slug %}" class="btn btn-primary mt-5">New payment</a>
+</div>-->
+
+
+
+
 
     <form action="{% url 'cart_adding_url' payment.pk %}" class="form-group" id="add-to-cart-form">{% csrf_token %}
         <input type="hidden" id="form-organization" value="{{ payment.organization }}">

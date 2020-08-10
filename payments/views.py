@@ -65,9 +65,9 @@ class OrganizationList(LoginRequiredMixin, View):
             user = CustomUser.objects.get(user=self.request.user)
         else:
             user = None
-        organization = Organization.objects.filter(author=self.request.user)
+        services = Organization.objects.filter(author=self.request.user)
         context = {
-            'organization': organization,
+            'services': services,
             'user': user,
         }
         return render(request, 'payments/organization_list.html', context)

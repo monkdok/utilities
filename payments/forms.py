@@ -30,7 +30,7 @@ class PaymentCreateForm(forms.ModelForm):
             # 'organization',
             'previous_counter_value',
             'current_counter_value',
-            'payment_period',
+            # 'payment_period',
         ]
 
 

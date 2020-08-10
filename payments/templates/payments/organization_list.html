@@ -10,16 +10,16 @@
 		<div class="row services-row">
 			{% comment %} <img src="{% static 'payments/media/img/alarm.png' %}" style="height: 20px; width: auto"
 				alt=""> {% endcomment %}
-			{% for organization in organization %}
+			{% for service in services %}
 			<div class="col-6 col-sm-4 col-md-3 col-lg-3 org-item-wrapper">
-				<a href="{% url 'organization_detail_url' organization.slug %}"
-					class="col organization-item"><img src="{{ organization.icon.icon.url }}" class="icon"><br>{{ organization.title }}</a>
+				<a href="{% url 'organization_detail_url' service.slug %}"
+					class="col organization-item"><img src="{{ service.icon.icon.url }}" class="icon"><br>{{ service.title }}</a>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
 	<div class="add-organization-bnt">
-		<a href="{% url 'organization_create_url' %}" class="btn btn-primary mt-5">Add Organization</a>
+		<a href="{% url 'organization_create_url' %}" class="btn btn-primary mt-5">Add Service</a>
 	</div>
 </div>
 {% comment %} <div class="username">
