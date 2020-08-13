@@ -7,7 +7,7 @@
       alt="onehome"></a>
   {% else %}
   <a class="navbar-brand" href="{% url 'organization_list_url' %}"><img
-      src="{% static 'payments/media/img/onehome_logo_gradient.png' %}"style="width: 150px; height: auto"
+      src="{% static 'payments/media/img/onehome_logo_gradient.png' %}" style="width: 150px; height: auto"
       alt="onehome"></a>
   {% endif %}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
@@ -33,31 +33,49 @@
     </ul>
     <ul class="navbar-nav ml-auto text-right">
       <li>
-        <a class="nav-link" id="cart" href="">Cart <span id="total-payments">
+
+        <!--Cart icon-->
+        <a class="nav-link" id="cart" href=""><i class="fas fa-cart-plus fa-lg" id="cart-icon"></i><span id="total-payments">
             {% if total_payments %}
-            ({{ total_payments }})
+            {{ total_payments }}
             {% else %}
-            (0)
+            0
             {% endif %}
           </span></a>
       </li>
+
+      <!--Profile icon-->
       <li>
-        <a href="{% url 'profile_settings_url' %}" class="nav-link"><i class="far fa-user"></i></a>
+        <a href="{% url 'profile_settings_url' %}" class="nav-link" title="Profile"><i class="fas fa-user fa-lg"></i></a>
       </li>
+
+      <!--Sign out-->
+      {% url 'account_logout' as logout_page_url %}
+      {% url 'account_signup' as signup_page_url %}
+      {% url 'account_login' as login_page_url %}
+      {% if request.path != logout_page_url and request.path != signup_page_url and request.path != login_page_url %}
+      <li class="nav-item">
+        <a href="{% url 'account_logout' %}" class="nav-link" type="button" data-toggle="modal" data-target="#exampleModalCenter" title="Log Out"><i
+                class="fas fa-sign-out-alt fa-lg"></i></a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 </nav>
+
 <div class="cart-items">
   <ul id="cart-snippet">
+    {% if payments_in_cart %}
     {% for payment in payments_in_cart %}
     <li>
       <div class="cart-items__title">
-        <h4>{{ payment.payment.organization.title }}</h4> <a href="{% url 'cart_delete_url' %}" class="delete-item" data-payments-in-cart-pk="{{ payment.pk }}"><svg width="1.5em"
-                                                                                                                                                                     height="auto"
-                                                                                                                                                                     viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
-        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
-      </svg>
+        <h4>{{ payment.payment.organization.title }}</h4> <a href="{% url 'cart_delete_url' %}" class="delete-item" data-payments-in-cart-pk="{{ payment.pk }}">
+
+        <!--Delete icon-->
+        <svg width="1.5em" height="auto" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+          <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+        </svg>
       </a>
       </div>
       values: {{ payment.payment.previous_counter_value }} - {{ payment.payment.current_counter_value }}<br>
@@ -69,4 +87,9 @@
   <div class="checkout-button">
     <a href="{% url 'checkout_url' %}"><button class="btn btn-primary checkout-btn">Checkout</button></a>
   </div>
+  {% else %}
+  <h3><span class="cart-is-empty">Cart is empty</span></h3>
+  {% endif %}
+
 </div>
+{% include 'payments/snippets/modal_logout.html' %}

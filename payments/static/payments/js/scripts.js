@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 
     function appendToCart(data) {
-        $('#total-payments').text('(' + data.count + ')')
+        $('#total-payments').text(" " + data.count)
         $('#cart-snippet').append(data.payment)
     }
 
@@ -12,10 +12,6 @@ $(document).ready(function () {
         $('.icon-on-button').html(data)
     }
 
-
-    function toggleCart() {
-        cartItems.toggle()
-    }
 
 
     function cartUpdate(pk, url, is_delete=false) {
@@ -33,7 +29,6 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.exist == true)  {
                     alert('Payment is already in Cart')
-                    console.log('data.exist == true')
                 } else {
                     if(data.payment || data.deleted) {
                     appendToCart(data)
@@ -57,14 +52,10 @@ $(document).ready(function () {
         let price = $('#form-price').val()
         let url = $(this).attr('action')
         cartUpdate('0', url)
+        $('.cart-is-empty').hide()
     })
 
 
-// Toggle cart
-    $('#cart').on('click', function(e) {
-        e.preventDefault()
-        toggleCart()
-    })
 
     /*$(document).mouseup(function (e) {
             if(!cartItems.is(e.target) &&
@@ -77,11 +68,13 @@ $(document).ready(function () {
 // Delete cart item
     $(document).on('click', '.delete-item', function(e) {
         e.preventDefault()
-        console.log('clicked')
         let paymentInCartId = $(this).attr('data-payments-in-cart-pk')
         let url = $(this).attr('href')
         cartUpdate(paymentInCartId, url, is_delete=true)
         $(this).closest('li').remove()
+        $('.checkout-button').hide()
+        $('.cart-is-empty').show()
+        cartItems.show()
     })
 
     function calculation() {
@@ -99,7 +92,6 @@ $(document).ready(function () {
         let pk = $(this).attr('data-icon-pk')
         let input = $('input#icon-pk')
         input.val(pk)
-        console.log('input: ' + input.val())
         let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val()
         let url = $(this).attr('data-url')
         $.ajax({
@@ -159,6 +151,57 @@ $(document).ready(function () {
             $('.units, .currency').hide()
         }
     })
+
+
+
+// Toggle cart
+//    $('#cart').on('click', function(e) {
+//        e.preventDefault()
+//        toggleCart()
+//    })
+
+function getParent(id) {
+    if ($elem.parents('.left').length != 0) {
+    //someone has this class
+}
+   return event.target.parentNode;
+}
+
+
+
+//$(document).click(function(e){
+////    let el = $('.' + e.target.className)
+////    console.log(el)
+//    console.log($(e.target).parents())
+//
+//    if ($(e.target).parents('.cart-items').length) {
+//        console.log('yeah')
+//        }
+//
+//})
+
+$(document).click(function(e){
+//     e.stopPropagation()
+        if ( ($(e.target).parents('#cart').length) || (e.target.id == 'cart')) {
+        e.preventDefault()
+//        toggleCart()
+          cartItems.toggle()
+        } else if (($(e.target).parents('.cart-items').length ) || ($(e.target).attr('class') == 'cart-items')) {
+            cartItems.show()
+        } else {
+            cartItems.hide()
+        }
+    })
+
+$(document).click(function(e) {
+    if ($(e.target).parents('.delete-item').length) {
+        cartItems.show()
+    }
+})
+
+//    if ($(this) != cartItems) {
+//        cartItems.hide()
+//    }
 
 })
 
