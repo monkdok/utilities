@@ -2,20 +2,49 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
-
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+<div class="row service-detail-row">
+    <div class="col service-detail">
+      <div class="row">
+        <div class="col service-title text-left">
+          <span class="">Sign Up</span>
+        </div>
+      </div>
+      <h5>Already have an account? Then please <a href="{{ login_url }}">sign in</a>.</h5>
+      <div class="col info-wrapper text-left mt-3">
+            <div class="info">
+                <div class="form-group">
+                    <form method="post" id="service-create-form">
+                        {% csrf_token %}
+                        <div class="fields-wrapper">
+                            <div class="row">
+                                <div class="col input-title input-login">
+                                    <!--                                    {{ form.title.label_tag }}-->
+                                    <!--                                    {{ form.email.errors }}-->
+                                    <!--                                    {{ form.title }}-->
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
-
+                                  <label for="id_email"><span class="field-label">E-mail</span></label>
+                                  <input type="email" name="email" placeholder="E-mail address" required="" id="id_email">
+                                  <label for="id_username"><span class="field-label">Username</span></label>
+                                  <input type="text" name="username" placeholder="Username" autofocus="autofocus" minlength="1" maxlength="150" required="" id="id_username">
+                                  <label for="id_first_name"><span class="field-label">First Name</span></label>
+                                  <input type="text" name="first_name" maxlength="30" required="" id="id_first_name">
+                                  <label for="id_last_name"><span class="field-label">Last Name</span></label>
+                                  <input type="text" name="last_name" maxlength="30" required="" id="id_last_name">
+                                  <label for="id_password1"><span class="field-label">Password</span></label>
+                                  <input type="password" name="password1" placeholder="Password" required="" id="id_password1">
+                                  <label for="id_password2"><span class="field-label">Password (again)</span></label>
+                                  <input type="password" name="password2" placeholder="Password (again)" required="" id="id_password2">
+                                </div>
+                            </div>
+                        </div>
+                      <div class="login-bottom text-right">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

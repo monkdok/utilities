@@ -194,7 +194,7 @@ $(document).click(function(e){
     })
 
 $(document).click(function(e) {
-    if ($(e.target).parents('.delete-item').length) {
+    if (($(e.target).parents('.delete-item').length) || ($(e.target).attr('class') == 'delete-item')) {
         cartItems.show()
     }
 })

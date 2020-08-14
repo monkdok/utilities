@@ -3,44 +3,74 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
-
 {% block content %}
-
-<h1>{% trans "Sign In" %}</h1>
-
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
-
-<div class="socialaccount_ballot">
-
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
-
-  <div class="login-or">{% trans 'or' %}</div>
-
-</div>
 
 {% include "socialaccount/snippets/login_extra.html" %}
 
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+
+<div class="row service-detail-row">
+    <div class="col service-detail">
+        <div class="row">
+            <div class="col service-title text-left">
+                <span class="">Sign In</span>
+            </div>
+        </div>
+        <div class="col info-wrapper text-left">
+            <div class="info">
+                <div class="form-group">
+                    <form method="post" id="service-create-form">
+                        {% csrf_token %}
+                        <div class="fields-wrapper">
+                            <div class="row">
+                                <div class="col input-title input-login">
+                                    <!--                                    {{ form.title.label_tag }}-->
+                                    <!--                                    {{ form.email.errors }}-->
+                                    <!--                                    {{ form.title }}-->
+                                    <label for="id_login"><span class="field-label">Username</span></label>
+                                    <input type="text" name="login" placeholder="Enter your Username" autofocus="autofocus" maxlength="150" required="" id="id_login">
+                                    <!--<input class="form-inline" required="" id="title" type="text" name="title" placeholder="">-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Password-->
+                        <div class="fields-wrapper">
+                            <div class="row">
+                                <div class="col input-title input-login">
+                                    <!--                                    {{ form.title.label_tag }}-->
+                                    <!--                                    {{ form.email.errors }}-->
+                                    <!--                                    {{ form.title }}-->
+                                    <label for="id_password"><span class="field-label">Password</span></label>
+                                    <input type="password" name="password" placeholder="Enter your Password" required="" id="id_password">
+                                </div>
+                            </div>
+                        </div>
+                        <label for="id_remember"><span class="field-label">Remember Me:</span></label>
+                        <input type="checkbox" name="remember" id="id_remember">
+                        <div class="row">
+                            <div class="col bottom-buttons">
+                                <a class="button secondaryAction" style="font-size: 20px;" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                                <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="login-bottom">
+            <span class="login-bottom__text">If you have not created an account yet, then please
+                <a href="{{ signup_url }}">sign up</a> first or use your<a class="btn btn-secondary social google-btn shadow-sm" title="Google"
+                                                                           href="/accounts/google/login/?process=login"><img
+                        style="width: 70px; height: auto;"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1920px-Google_2015_logo.svg.png"/></a>   account
+                <br>
+            </span>
+        </div>
+
+    </div>
+</div>
 {% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
 {% endblock %}
