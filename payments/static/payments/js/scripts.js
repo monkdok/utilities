@@ -203,10 +203,54 @@ $(document).click(function(e) {
 //        cartItems.hide()
 //    }
 
+// PDF
+$('#pdf').click(function Html2Pdf() {
+    let doc = new jsPDF()
+    let content = $('.checkout-items-wrapper').html()
+    let outputFileName = $('#payment-checkout-date').val()
+    doc.fromHTML(content, 15)
+    doc.save(outputFileName + '.pdf')
+
+
+//var doc = new jsPDF();
+//doc.addFont("test/reference/PTSans.ttf", "PTSans", "normal");
+//
+//doc.setFont("PTSans"); // set font
+//doc.setFontSize(10);
+//doc.text("А ну чики брики и в дамки!", 10, 10);
+
+
 })
 
 
 
+
+//JPG
+let element = $(".checkout-items-wrapper"); // global variable
+let getCanvas; // global variable
+
+    $("#btn-Preview-Image").on('click', function () {
+//        $(".checkout-items-wrapper").css('transform', 'scale(2, 2)')
+        element = $(".checkout-items-wrapper"); // global variable
+        html2canvas(element, {
+        scale: 2,
+        onrendered: function (canvas) {
+                $("#previewImage").append(canvas);
+                getCanvas = canvas;
+             }
+         });
+
+//        element.css('transform', 'scale(1)')
+    });
+
+	$("#btn-Convert-Html2Image").on('click', function () {
+    let imgageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    let newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    $("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
+	});
+
+})
 
 
     /*let addButton = $('#btn-add-to-cart')

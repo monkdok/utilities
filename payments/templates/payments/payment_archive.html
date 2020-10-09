@@ -13,9 +13,9 @@
         <div class="row justify-content-center">
             <div class="col archive-body">
                 {% for payment in payments %}
-                    <div class="col-12 card archive-card  mb-3 text-left">
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-6 card archive-card  mb-3 text-left">
                         <div class="card-body">
-                            <h5 class="card-title">{{ payment.date }}</h5>
+                            <h5 class="card-title">{{ payment.organization.title }} ({{ payment.date|date:"d.m.Y" }})</h5>
                             <p class="card-text">{{ payment.previous_counter_value }} - {{ payment.current_counter_value }} <span class="measurement_units">{{ payment.organization.measurement_units }}</span></p>
                             <div class="add-button text-right">
                                 <a href="{% url 'payment_detail_url' payment.pk %}" class="stretched-link"></a>

@@ -1,6 +1,24 @@
 {% extends 'payments/base.html' %}
 
 {% block content %}
+<style>
+    body {
+        background-color: #f6f7f9;
+    }
+    h4 {
+        font-family: "Raleway", sans-serif !important;
+        font-weight: 600 !important;
+        color: #696e78 !important;
+    }
+
+    .test {
+        color: green;
+    }
+</style>
+<!--
+<div class="test">test</div>
+-->
+<input id="payment-checkout-date" type="hidden" value="{% now 'd.m.Y-h-i' %}">
 <div class="checkout-items-wrapper text-left">
     <form action="{% url 'checkout_url' %}" method="post"> {% csrf_token %}
         {% for payment in payments_in_cart %}
@@ -15,13 +33,17 @@
         <div class="total">
             <h4>Total: <span id="total-price"></span> UAH</h4>
         </div>
-        <div class="text-right">
-            <div class="checkout-button">
-                <input type="submit" class="btn btn-primary checkout-button" value="Save">
-            </div>
-        </div>
     </form>
 </div>
+
+<!--<button id="pdf">.pdf</button>-->
+<!--<input class="btn btn-secondary" id="btn-Preview-Image" type="button" value="Preview"/>-->
+<input class="btn btn-primary" id="btn-Convert-Html2Image" value="Download">
+<br/>
+<!--<h3>Preview :</h3>-->
+<!--<div id="previewImage">-->
+<!--</div>-->
+
 <!--<form method="post">-->
 <!--    {% csrf_token %}-->
 <!--    <input type="submit" class="btn btn-success" value="OK">-->

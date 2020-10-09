@@ -7,9 +7,11 @@ from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import date
+from datetime import date
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import View, DetailView, DeleteView, UpdateView
 from .forms import *
+from fpdf import FPDF
 
 
 class CustomUserView(LoginRequiredMixin, View):
@@ -326,6 +328,7 @@ class ProfileSettings(LoginRequiredMixin, View):
 
 class OrderDetailView(LoginRequiredMixin, View):
     login_url = 'account_login'
+
     def get(self, request, pk):
         order = Order.objects.get(pk=pk)
         context = {

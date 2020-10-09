@@ -220,6 +220,7 @@ input:focus {
 
 .btn-secondary {
     width: 150px;
+    height: 45px;
     border-radius: 30px;
     background-color: #ffffff;
     color: #696e78;
@@ -403,7 +404,17 @@ input:focus {
     box-shadow: 0px 8px 16px -4px rgba(230, 235, 242, 1);
 }
 
-.archive-body,.info-body {
+.archive-body {
+    width: 100%;
+    min-width: 260px;
+    max-width: 100%;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.info-body {
     width: 100%;
     min-width: 260px;
     max-width: 100%;
@@ -598,7 +609,7 @@ org-item-wrapper {
 }
 
 .checkout-btn {
-    width: 50px;
+    width: 110px;
     display: flex;
     justify-content: center;
     color: white !important;
@@ -641,4 +652,9 @@ org-item-wrapper {
 
 .modal-header, .modal-footer {
     border: none ! important;
+}
+
+.checkout-items-wrapper {
+    max-width: 550px;
+    background-color: #f6f7f9;
 }
